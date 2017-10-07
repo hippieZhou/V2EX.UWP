@@ -172,7 +172,7 @@
             Grid.Column="1"
             Padding="24,0,0,0">
 
-            <views:HomeDetailControl x:Name="DetailControl" MasterMenuItem="{x:Bind ViewModel.SelectedTopic, Mode=OneWay}" />
+            <views:HomeDetailControl x:Name="DetailControl" MasterTopicItem="{x:Bind ViewModel.SelectedTopic, Mode=OneWay}" />
         </Grid>
 
         <!--  Adaptive triggers  -->

@@ -19,8 +19,6 @@ namespace V2EX.ViewModels
         {
             Label = label;
             Name = name;
-
-            //WebUtility.HtmlDecode();
         }
     }
 }

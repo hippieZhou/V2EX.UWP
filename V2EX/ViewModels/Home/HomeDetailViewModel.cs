@@ -8,6 +8,7 @@ using V2EX.Models;
 using V2EX.Services;
 
 using Windows.UI.Xaml;
+using System.Threading.Tasks;
 
 namespace V2EX.ViewModels
 {

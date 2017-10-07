@@ -15,7 +15,7 @@
         Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
 
         <views:HomeDetailControl
-            MasterMenuItem="{x:Bind ViewModel.Item}"
+            MasterTopicItem="{x:Bind ViewModel.Item}"
             Margin="{StaticResource MediumLeftRightMargin}" />
 
         <!--  Adaptive triggers  -->

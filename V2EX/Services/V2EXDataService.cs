@@ -88,5 +88,16 @@ namespace V2EX.Services
             var list = await GetTopicsAsync(url);
             return list;
         }
+
+        public static async Task<IEnumerable<ReplyModel>> GetRepliesByTopicId(long id)
+        {
+            var list = new List<ReplyModel>();
+            var url = HTTPS_API_URL + API_REPLIES + "?topic_id=" + id;
+            var json = await GetJsonAsync(url);
+            var data = JsonConvert.DeserializeObject<List<ReplyModel>>(json);
+            if (data != null)
+                list.AddRange(data);
+            return list;
+        }
     }
 }
