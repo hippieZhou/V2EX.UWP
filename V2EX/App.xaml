@@ -2,14 +2,15 @@
     x:Class="V2EX.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:vms="using:V2EX.ViewModels"
-    >
+    xmlns:converters="using:V2EX.Converters"
+    xmlns:vms="using:V2EX.ViewModels">
 
     <Application.Resources>
         <ResourceDictionary>
+            <converters:UrlToImageSourceConverter x:Key="UrlToImageSourceConverter" />
             <vms:ViewModelLocator x:Key="Locator" />
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Styles/TextBlock.xaml"/>
+                <ResourceDictionary Source="/Styles/TextBlock.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

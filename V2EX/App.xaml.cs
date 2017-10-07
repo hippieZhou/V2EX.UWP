@@ -56,7 +56,7 @@ namespace V2EX
 
         private ActivationService CreateActivationService()
         {
-            return new ActivationService(this, typeof(ViewModels.MainViewModel), new Views.ShellPage());
+            return new ActivationService(this, typeof(ViewModels.HomeViewModel), new Views.ShellPage());
         }
     }
 }

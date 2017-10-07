@@ -40,9 +40,9 @@ namespace V2EX.ViewModels
             }
         }
 
-        private SampleOrder _item;
+        private TopicModel _item;
 
-        public SampleOrder Item
+        public TopicModel Item
         {
             get { return _item; }
             set { Set(ref _item, value); }

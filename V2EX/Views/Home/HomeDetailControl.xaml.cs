@@ -9,13 +9,13 @@ namespace V2EX.Views
 {
     public sealed partial class HomeDetailControl : UserControl
     {
-        public SampleOrder MasterMenuItem
+        public TopicModel MasterMenuItem
         {
-            get { return GetValue(MasterMenuItemProperty) as SampleOrder; }
+            get { return GetValue(MasterMenuItemProperty) as TopicModel; }
             set { SetValue(MasterMenuItemProperty, value); }
         }
 
-        public static readonly DependencyProperty MasterMenuItemProperty = DependencyProperty.Register("MasterMenuItem", typeof(SampleOrder), typeof(HomeDetailControl), new PropertyMetadata(null));
+        public static readonly DependencyProperty MasterMenuItemProperty = DependencyProperty.Register("MasterMenuItem", typeof(TopicModel), typeof(HomeDetailControl), new PropertyMetadata(null));
 
         public HomeDetailControl()
         {

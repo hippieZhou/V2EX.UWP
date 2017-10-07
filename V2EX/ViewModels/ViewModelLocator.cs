@@ -17,7 +17,6 @@ namespace V2EX.ViewModels
 
             SimpleIoc.Default.Register(() => new NavigationServiceEx());
             SimpleIoc.Default.Register<ShellViewModel>();
-            Register<MainViewModel, MainPage>();
             Register<HomeViewModel, HomePage>();
             Register<HomeDetailViewModel, HomeDetailPage>();
             Register<SettingsViewModel, SettingsPage>();
@@ -28,8 +27,6 @@ namespace V2EX.ViewModels
         public HomeDetailViewModel HomeDetailViewModel => ServiceLocator.Current.GetInstance<HomeDetailViewModel>();
 
         public HomeViewModel HomeViewModel => ServiceLocator.Current.GetInstance<HomeViewModel>();
-
-        public MainViewModel MainViewModel => ServiceLocator.Current.GetInstance<MainViewModel>();
 
         public ShellViewModel ShellViewModel => ServiceLocator.Current.GetInstance<ShellViewModel>();
 

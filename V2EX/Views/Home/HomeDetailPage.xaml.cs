@@ -23,7 +23,7 @@ namespace V2EX.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            ViewModel.Item = e.Parameter as SampleOrder;
+            ViewModel.Item = e.Parameter as TopicModel;
         }
     }
 }
