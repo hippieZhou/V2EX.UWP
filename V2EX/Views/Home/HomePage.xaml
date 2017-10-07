@@ -33,7 +33,14 @@
                 </ListView.ItemsPanel>
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="vm:TabNavigationItem">
-                        <TextBlock Tag="{x:Bind Name, Mode=OneWay}" Text="{x:Bind Label, Mode=OneWay}" />
+                        <controls:DropShadowPanel
+                            BlurRadius="8"
+                            OffsetX="2"
+                            OffsetY="2"
+                            ShadowOpacity="0.7"
+                            Color="Black">
+                            <TextBlock Tag="{x:Bind Name, Mode=OneWay}" Text="{x:Bind Label, Mode=OneWay}" />
+                        </controls:DropShadowPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
