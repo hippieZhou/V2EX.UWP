@@ -2,6 +2,8 @@
     x:Class="V2EX.Views.HomePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="using:Microsoft.Toolkit.Uwp.UI.Animations.Behaviors"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
@@ -123,16 +125,26 @@
                 Style="{StaticResource PageTitleStyle}" />
 
             <!--  The SystemControlPageBackgroundChromeLowBrush background represents where you should place your master content.  -->
+            <!--  HeaderTemplate="{StaticResource TabMenuListViewItemTemplate}"  -->
             <ListView
                 x:Name="MasterListView"
                 Grid.Row="1"
                 Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}"
-                HeaderTemplate="{StaticResource TabMenuListViewItemTemplate}"
                 IsItemClickEnabled="True"
                 ItemContainerTransitions="{x:Null}"
                 ItemTemplate="{StaticResource MasterListViewItemTemplate}"
                 ItemsSource="{x:Bind ViewModel.TabTopics, Mode=OneWay}"
                 SelectedItem="{x:Bind ViewModel.SelectedTopic, Mode=OneWay}">
+                <ListView.Header>
+                    <controls:ScrollHeader Mode="Sticky" TargetListViewBase="{Binding ElementName=MasterListView}">
+                        <Grid Background="#dadada">
+                            <ContentControl
+                                HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Center"
+                                ContentTemplate="{StaticResource TabMenuListViewItemTemplate}" />
+                        </Grid>
+                    </controls:ScrollHeader>
+                </ListView.Header>
                 <i:Interaction.Behaviors>
                     <ic:EventTriggerBehavior EventName="ItemClick">
                         <ic:InvokeCommandAction Command="{x:Bind ViewModel.ItemClickCommand}" />

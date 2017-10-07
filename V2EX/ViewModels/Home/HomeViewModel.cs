@@ -137,6 +137,12 @@ namespace V2EX.ViewModels
         {
             _currentState = currentState;
 
+            TabTopics.Clear();
+            var list = (await V2EXDataService.GetHotTopicsAsync()).ToList();
+            foreach (var item in list)
+            {
+                TabTopics.Add(item);
+            }
             await Task.CompletedTask;
         }
 
