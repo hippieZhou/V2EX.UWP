@@ -6,7 +6,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using V2EX.UI.ViewModels.Dashboard;
 using V2EX.UI.Views;
 using V2EX.UI.Views.Dashboard;
 using V2EX.UI.Views.Explore;

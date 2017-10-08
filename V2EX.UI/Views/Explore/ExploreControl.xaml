@@ -8,76 +8,100 @@
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:V2EX.UI.Views.Explore"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vms="using:V2EX.UI.ViewModels"
     DataContext="{Binding ExploreViewModel, Source={StaticResource Locator}}"
     mc:Ignorable="d">
 
-    <controls:MasterDetailsView
-        Foreground="Black"
-        ItemsSource="{Binding Emails}"
-        MasterPaneWidth="480"
-        NoSelectionContent="Select an item to view"
-        ViewStateChanged="MasterDetailsView_ViewStateChanged">
-        <controls:MasterDetailsView.ItemTemplate>
-            <DataTemplate>
-                <StackPanel Margin="0,8">
-                    <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="{Binding From}" />
-                    <TextBlock
-                        Foreground="Red"
-                        MaxLines="1"
-                        Style="{ThemeResource BodyTextBlockStyle}"
-                        Text="{Binding Subject}" />
-                    <TextBlock
-                        MaxLines="1"
-                        Opacity=".6"
-                        Style="{ThemeResource BodyTextBlockStyle}"
-                        Text="{Binding Body}" />
-                </StackPanel>
-            </DataTemplate>
-        </controls:MasterDetailsView.ItemTemplate>
-        <controls:MasterDetailsView.DetailsTemplate>
-            <DataTemplate>
-                <RelativePanel Margin="24">
-                    <controls:RoundImageEx
-                        x:Name="FromEllipse"
-                        Width="50"
-                        Height="50"
-                        CornerRadius="999"
-                        Source="{Binding Thumbnail}" />
-                    <TextBlock
-                        Margin="12,-6,0,0"
-                        RelativePanel.RightOf="FromEllipse"
-                        Style="{ThemeResource SubtitleTextBlockStyle}"
-                        Text="{Binding From}" />
-                    <TextBlock
-                        x:Name="SubjectLine"
-                        Margin="0,12,0,0"
-                        RelativePanel.Below="FromEllipse"
-                        Style="{ThemeResource BodyTextBlockStyle}"
-                        Text="{Binding Subject}" />
-                    <TextBlock
-                        x:Name="Body"
-                        Margin="0,12,0,0"
-                        RelativePanel.Below="SubjectLine"
-                        Style="{ThemeResource BodyTextBlockStyle}"
-                        Text="{Binding Body}"
-                        TextWrapping="Wrap" />
-                </RelativePanel>
-            </DataTemplate>
-        </controls:MasterDetailsView.DetailsTemplate>
-        <controls:MasterDetailsView.NoSelectionContentTemplate>
-            <DataTemplate>
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <SymbolIcon RenderTransformOrigin=".5,.5" Symbol="Mail">
-                        <SymbolIcon.RenderTransform>
-                            <CompositeTransform ScaleX="2" ScaleY="2" />
-                        </SymbolIcon.RenderTransform>
-                    </SymbolIcon>
-                    <TextBlock
-                        Margin="0,12"
-                        FontSize="24"
-                        Text="{Binding}" />
-                </StackPanel>
-            </DataTemplate>
-        </controls:MasterDetailsView.NoSelectionContentTemplate>
-    </controls:MasterDetailsView>
+    <Grid>
+        <controls:MasterDetailsView
+            Foreground="Black"
+            ItemsSource="{Binding Emails}"
+            MasterPaneWidth="480"
+            NoSelectionContent="Select an item to view"
+            ViewStateChanged="MasterDetailsView_ViewStateChanged">
+            <controls:MasterDetailsView.MasterHeader>
+                <Grid Margin="-12,0" Background="{StaticResource ThemeBaseBackground}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <RadioButton
+                        Grid.Column="0"
+                        Command="{x:Bind ViewModel.TabItemClickCommand}"
+                        CommandParameter="HOP"
+                        Content="最新"
+                        IsChecked="True"
+                        Style="{StaticResource CustomTabHeaderToggleButtonRevealStyle}" />
+                    <RadioButton
+                        Grid.Column="1"
+                        Command="{x:Bind ViewModel.TabItemClickCommand}"
+                        CommandParameter="LATEST"
+                        Content="最新"
+                        Style="{StaticResource CustomTabHeaderToggleButtonRevealStyle}" />
+                </Grid>
+            </controls:MasterDetailsView.MasterHeader>
+            <controls:MasterDetailsView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="0,8">
+                        <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="{Binding From}" />
+                        <TextBlock
+                            Foreground="Red"
+                            MaxLines="1"
+                            Style="{ThemeResource BodyTextBlockStyle}"
+                            Text="{Binding Subject}" />
+                        <TextBlock
+                            MaxLines="1"
+                            Opacity="0.6"
+                            Style="{ThemeResource BodyTextBlockStyle}"
+                            Text="{Binding Body}" />
+                    </StackPanel>
+                </DataTemplate>
+            </controls:MasterDetailsView.ItemTemplate>
+            <controls:MasterDetailsView.DetailsTemplate>
+                <DataTemplate>
+                    <RelativePanel Margin="24">
+                        <controls:RoundImageEx
+                            x:Name="FromEllipse"
+                            Width="50"
+                            Height="50"
+                            CornerRadius="999"
+                            Source="{Binding Thumbnail}" />
+                        <TextBlock
+                            Margin="12,-6,0,0"
+                            RelativePanel.RightOf="FromEllipse"
+                            Style="{ThemeResource SubtitleTextBlockStyle}"
+                            Text="{Binding From}" />
+                        <TextBlock
+                            x:Name="SubjectLine"
+                            Margin="0,12,0,0"
+                            RelativePanel.Below="FromEllipse"
+                            Style="{ThemeResource BodyTextBlockStyle}"
+                            Text="{Binding Subject}" />
+                        <TextBlock
+                            x:Name="Body"
+                            Margin="0,12,0,0"
+                            RelativePanel.Below="SubjectLine"
+                            Style="{ThemeResource BodyTextBlockStyle}"
+                            Text="{Binding Body}"
+                            TextWrapping="Wrap" />
+                    </RelativePanel>
+                </DataTemplate>
+            </controls:MasterDetailsView.DetailsTemplate>
+            <controls:MasterDetailsView.NoSelectionContentTemplate>
+                <DataTemplate>
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <SymbolIcon RenderTransformOrigin=".5,.5" Symbol="Mail">
+                            <SymbolIcon.RenderTransform>
+                                <CompositeTransform ScaleX="2" ScaleY="2" />
+                            </SymbolIcon.RenderTransform>
+                        </SymbolIcon>
+                        <TextBlock
+                            Margin="0,12"
+                            FontSize="24"
+                            Text="{Binding}" />
+                    </StackPanel>
+                </DataTemplate>
+            </controls:MasterDetailsView.NoSelectionContentTemplate>
+        </controls:MasterDetailsView>
+    </Grid>
 </UserControl>

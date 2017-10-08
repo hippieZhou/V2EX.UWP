@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using V2EX.Models;
 using V2EX.Service;
 
-namespace V2EX.UI.ViewModels.Dashboard
+namespace V2EX.UI.ViewModels
 {
     public class DashboardViewModel : ViewModelBase
     {

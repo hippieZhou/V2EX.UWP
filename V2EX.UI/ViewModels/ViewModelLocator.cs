@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using V2EX.UI.ViewModels.Dashboard;
-using V2EX.UI.ViewModels.Explore;
 
 namespace V2EX.UI.ViewModels
 {
