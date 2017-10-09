@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using V2EX.Models;
+using V2EX.Service;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -13,13 +15,17 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
+// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace V2EX.UI
 {
-    public sealed partial class MyUserControl1 : UserControl
+    /// <summary>
+    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// </summary>
+    public sealed partial class BlankPage1 : Page
     {
-        public MyUserControl1()
+        private List<EmailModel> Eamils = SampleDataService.GetEmails().ToList();
+        public BlankPage1()
         {
             this.InitializeComponent();
         }

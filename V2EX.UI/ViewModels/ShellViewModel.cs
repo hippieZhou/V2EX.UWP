@@ -68,6 +68,14 @@ namespace V2EX.UI.ViewModels
             set { Set(ref _primaryItems, value); }
         }
 
+        private ObservableCollection<ShellNavigationItem> _secondaryItems = new ObservableCollection<ShellNavigationItem>();
+
+        public ObservableCollection<ShellNavigationItem> SecondaryItems
+        {
+            get { return _secondaryItems; }
+            set { Set(ref _secondaryItems, value); }
+        }
+
         private UIElement _shellContent;
         public UIElement ShellContent
         {
@@ -115,12 +123,12 @@ namespace V2EX.UI.ViewModels
             this.PrimaryItems.Add(new ShellNavigationItem("ms-appx:///Assets/Menus/ic_dashboard_black_24dp.png", "节点", true));
             this.PrimaryItems.Add(new ShellNavigationItem("ms-appx:///Assets/Menus/ic_notifications_black_24dp.png", "通知", false));
             this.PrimaryItems.Add(new ShellNavigationItem("ms-appx:///Assets/Menus/ic_favorite_black_24dp.png", "收藏", false));
-            this.PrimaryItems.Add(new ShellNavigationItem("ms-appx:///Assets/Menus/ic_settings_black_24dp.png", "设置", false));
-            this.PrimaryItems.Add(new ShellNavigationItem("ms-appx:///Assets/Menus/ic_feedback_black_24dp.png", "反馈", false));
+            this.SecondaryItems.Add(new ShellNavigationItem("ms-appx:///Assets/Menus/ic_settings_black_24dp.png", "设置", false));
+            this.SecondaryItems.Add(new ShellNavigationItem("ms-appx:///Assets/Menus/ic_feedback_black_24dp.png", "反馈", false));
 
-            this.LastSelectedItem = this.PrimaryItems.FirstOrDefault();
-            _contentControlDic.TryGetValue(this.LastSelectedItem.Label, out UIElement value);
-            this.ShellContent = value;
+            //this.LastSelectedItem = this.PrimaryItems.FirstOrDefault();
+            //_contentControlDic.TryGetValue(this.LastSelectedItem.Label, out UIElement value);
+            //this.ShellContent = value;
         }
     }
 }

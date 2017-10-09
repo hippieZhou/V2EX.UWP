@@ -32,7 +32,6 @@ namespace V2EX.UI.ViewModels
                 {
                     if (tabName != _lastTabName)
                     {
-                        Debug.WriteLine(tabName);
                         _lastTabName = tabName;
                     }
                 }));

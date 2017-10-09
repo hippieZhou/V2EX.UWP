@@ -10,7 +10,44 @@
     d:DesignWidth="400"
     mc:Ignorable="d">
 
-    <Grid>
-        <!--<Image Source="ms-appx:///Assets/Square44x44Logo.png" Stretch="None" />-->
-    </Grid>
+    <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+        <Grid>
+            <StackPanel
+                Margin="8"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <Image
+                    MaxHeight="60"
+                    Margin="24"
+                    Source="ms-appx:///Assets/Logo/logo@2x.png" />
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Style="{ThemeResource SubtitleTextBlockStyle}"
+                    Text="Our Mission" />
+                <TextBlock MaxLines="1" Style="{ThemeResource BodyTextBlockStyle}" />
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Opacity="0.6"
+                    Style="{ThemeResource BodyTextBlockStyle}"
+                    Text="V2EX 的使命是为创意工作者打造一个最好的社区，他们在这里可以获得灵感，分享想法，找到伙伴，获得通向目标的加速度。"
+                    TextWrapping="WrapWholeWords" />
+                <TextBlock
+                    Margin="0,12"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Opacity="0.6"
+                    Style="{ThemeResource BodyTextBlockStyle}"
+                    Text="V2EX's mission is to create the best place for creative people. A place where they can get inspired, sharing ideas, finding partners, and gaining momentum on goals."
+                    TextWrapping="WrapWholeWords" />
+            </StackPanel>
+            <HyperlinkButton
+                Margin="24"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                Content="way to explore"
+                NavigateUri="https://www.v2ex.com/" />
+        </Grid>
+    </ScrollViewer>
 </UserControl>

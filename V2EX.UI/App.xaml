@@ -17,6 +17,7 @@
                 <ResourceDictionary Source="Styles/NavigationMenuButton.xaml" />
                 <ResourceDictionary Source="Styles/TabPivot.xaml" />
                 <ResourceDictionary Source="Styles/TabHeaderRadioButton.xaml" />
+                <ResourceDictionary Source="Styles/MasterDetailsListViewItem.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

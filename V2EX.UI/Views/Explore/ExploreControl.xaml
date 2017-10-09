@@ -11,10 +11,11 @@
     xmlns:vms="using:V2EX.UI.ViewModels"
     DataContext="{Binding ExploreViewModel, Source={StaticResource Locator}}"
     mc:Ignorable="d">
-
     <Grid>
         <controls:MasterDetailsView
+            Background="{StaticResource ThemeBaseLightBackground}"
             Foreground="Black"
+            ItemContainerStyle="{StaticResource MasterDetailsListViewItemStyle}"
             ItemsSource="{Binding Emails}"
             MasterPaneWidth="480"
             NoSelectionContent="Select an item to view"
@@ -36,25 +37,35 @@
                         Grid.Column="1"
                         Command="{x:Bind ViewModel.TabItemClickCommand}"
                         CommandParameter="LATEST"
-                        Content="最新"
+                        Content="最热"
                         Style="{StaticResource CustomTabHeaderToggleButtonRevealStyle}" />
                 </Grid>
             </controls:MasterDetailsView.MasterHeader>
             <controls:MasterDetailsView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Margin="0,8">
-                        <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="{Binding From}" />
-                        <TextBlock
-                            Foreground="Red"
-                            MaxLines="1"
-                            Style="{ThemeResource BodyTextBlockStyle}"
-                            Text="{Binding Subject}" />
-                        <TextBlock
-                            MaxLines="1"
-                            Opacity="0.6"
-                            Style="{ThemeResource BodyTextBlockStyle}"
-                            Text="{Binding Body}" />
-                    </StackPanel>
+                    <controls:DropShadowPanel
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        BlurRadius="30"
+                        OffsetY="3"
+                        ShadowOpacity="0.2"
+                        Color="#48000000">
+                        <Grid Margin="4" Background="White">
+                            <StackPanel Margin="8">
+                                <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="{Binding From}" />
+                                <TextBlock
+                                    Foreground="Red"
+                                    MaxLines="1"
+                                    Style="{ThemeResource BodyTextBlockStyle}"
+                                    Text="{Binding Subject}" />
+                                <TextBlock
+                                    MaxLines="1"
+                                    Opacity="0.6"
+                                    Style="{ThemeResource BodyTextBlockStyle}"
+                                    Text="{Binding Body}" />
+                            </StackPanel>
+                        </Grid>
+                    </controls:DropShadowPanel>
                 </DataTemplate>
             </controls:MasterDetailsView.ItemTemplate>
             <controls:MasterDetailsView.DetailsTemplate>
