@@ -47,7 +47,7 @@ namespace V2EX.UI.ViewModels
             set { Set(ref _displayMode, value); }
         }
 
-        private Visibility _hamburgerMenuVisibility;
+        private Visibility _hamburgerMenuVisibility = Visibility.Collapsed;
         public Visibility HamburgerMenuVisibility
         {
             get { return _hamburgerMenuVisibility; }

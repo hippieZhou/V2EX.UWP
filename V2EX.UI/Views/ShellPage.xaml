@@ -98,7 +98,7 @@
             HamburgerVisibility="{x:Bind ViewModel.HamburgerMenuVisibility, Mode=TwoWay}"
             IsPaneOpen="{x:Bind ViewModel.IsPaneOpen, Mode=TwoWay}"
             ItemTemplate="{StaticResource NavigationMenuItemDataTemplate}"
-            ItemsSource="{x:Bind ViewModel.PrimaryItems}"
+            ItemsSource="{x:Bind ViewModel.PrimaryItems, Mode=OneWay}"
             OpenPaneLength="240"
             OptionsItemTemplate="{StaticResource NavigationMenuItemDataTemplate}"
             OptionsItemsSource="{x:Bind ViewModel.SecondaryItems}"
