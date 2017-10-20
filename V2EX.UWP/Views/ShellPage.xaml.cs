@@ -38,34 +38,30 @@ namespace V2EX.UWP.Views
         {
             this.InitializeComponent();
             ViewModel.Initialize(this.contentFrame);
+
+            NavigationManager.BackRequested += NavigationManager_BackRequested;
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            SetupTitlebar();
-            NavigationManager.BackRequested += NavigationManager_BackRequested;
 
-            void SetupTitlebar()
+            #region SetupTitleBar
+
+            if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.ApplicationView"))
             {
-                if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.ApplicationView"))
+                var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+                if (titleBar != null)
                 {
-                    var titleBar = ApplicationView.GetForCurrentView().TitleBar;
-                    if (titleBar != null)
-                    {
-                        titleBar.ButtonForegroundColor = Colors.Black;
-                        titleBar.ButtonBackgroundColor = Colors.Transparent;
-                        titleBar.BackgroundColor = Colors.Transparent;
-                        titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+                    titleBar.ButtonForegroundColor = Colors.Black;
+                    titleBar.ButtonBackgroundColor = Colors.Transparent;
+                    titleBar.BackgroundColor = Colors.Transparent;
+                    titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
 
-                        CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
-                    }
+                    CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
                 }
             }
-        }
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            base.OnNavigatedFrom(e);
-            NavigationManager.BackRequested -= NavigationManager_BackRequested;
+
+            #endregion
         }
 
         private void NavigationManager_BackRequested(object sender, BackRequestedEventArgs e)

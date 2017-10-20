@@ -12,6 +12,6 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Style="{StaticResource HeaderTextBlockStyle}"
-            Text="A" />
+            Text="首页" />
     </Grid>
 </Page>
