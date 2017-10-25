@@ -40,7 +40,7 @@ namespace V2EX.UWP.Services
                 {
                     OrderId = 72,
                     OrderDate = new DateTime(2017, 06, 03),
-                    Company = "Company Z",
+                    Company = "Company Z,Company ZCompany ZCompany ZCompany ZCompany ZCompany ZCompany ZCompany ZCompany ZCompany ZCompany Z",
                     ShipTo = "Run Liu",
                     OrderTotal = 2310.00,
                     Status = "Closed",
@@ -146,7 +146,7 @@ namespace V2EX.UWP.Services
                 {
                     Id = 400098,
                     Title= "任意国外站点都不能上了？",
-                    Content = "hello world",
+                    Content = "hello world,hello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello world",
                     Author = "m2276699",
                     AvatarNormal = "ms-appx:///Assets/logo.png",
                     Created = DateTime.Now

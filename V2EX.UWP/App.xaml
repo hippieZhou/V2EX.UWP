@@ -21,7 +21,7 @@
             <SolidColorBrush x:Key="ThemeBaseLightBackground" Color="#FAFAFA" />
 
             <!--  Breakpoints  -->
-            <x:Double x:Key="Breakpoint640Plus">560</x:Double>
+            <x:Double x:Key="Breakpoint560Plus">560</x:Double>
 
             <!--<Style x:Key="GridViewItemStyle" TargetType="GridViewItem">
                 <Setter Property="Margin" Value="0,0,20,20" />

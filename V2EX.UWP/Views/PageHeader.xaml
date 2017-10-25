@@ -30,7 +30,7 @@
             <VisualStateGroup>
                 <VisualState x:Name="WideLayout">
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger x:Name="WideLayoutTrigger" MinWindowWidth="{StaticResource Breakpoint640Plus}" />
+                        <AdaptiveTrigger x:Name="WideLayoutTrigger" MinWindowWidth="{StaticResource Breakpoint560Plus}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="headerControl.Visibility" Value="Visible" />

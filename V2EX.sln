@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "V2EX.UWP", "V2EX.UWP\V2EX.UWP.csproj", "{62B34FDA-217E-4D68-B3EE-26936FB99F32}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "V2EX", "V2EX\V2EX.csproj", "{1129FEBF-41B5-476B-A1AF-C55A0085B00B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,26 +37,6 @@ Global
 		{62B34FDA-217E-4D68-B3EE-26936FB99F32}.Release|x86.ActiveCfg = Release|x86
 		{62B34FDA-217E-4D68-B3EE-26936FB99F32}.Release|x86.Build.0 = Release|x86
 		{62B34FDA-217E-4D68-B3EE-26936FB99F32}.Release|x86.Deploy.0 = Release|x86
-		{1129FEBF-41B5-476B-A1AF-C55A0085B00B}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{1129FEBF-41B5-476B-A1AF-C55A0085B00B}.Debug|ARM.ActiveCfg = Debug|ARM
-		{1129FEBF-41B5-476B-A1AF-C55A0085B00B}.Debug|ARM.Build.0 = Debug|ARM
-		{1129FEBF-41B5-476B-A1AF-C55A0085B00B}.Debug|ARM.Deploy.0 = Debug|ARM
-		{1129FEBF-41B5-476B-A1AF-C55A0085B00B}.Debug|x64.ActiveCfg = Debug|x64
-		{1129FEBF-41B5-476B-A1AF-C55A0085B00B}.Debug|x64.Build.0 = Debug|x64
-		{1129FEBF-41B5-476B-A1AF-C55A0085B00B}.Debug|x64.Deploy.0 = Debug|x64
-		{1129FEBF-41B5-476B-A1AF-C55A0085B00B}.Debug|x86.ActiveCfg = Debug|x86
-		{1129FEBF-41B5-476B-A1AF-C55A0085B00B}.Debug|x86.Build.0 = Debug|x86
-		{1129FEBF-41B5-476B-A1AF-C55A0085B00B}.Debug|x86.Deploy.0 = Debug|x86
-		{1129FEBF-41B5-476B-A1AF-C55A0085B00B}.Release|Any CPU.ActiveCfg = Release|x86
-		{1129FEBF-41B5-476B-A1AF-C55A0085B00B}.Release|ARM.ActiveCfg = Release|ARM
-		{1129FEBF-41B5-476B-A1AF-C55A0085B00B}.Release|ARM.Build.0 = Release|ARM
-		{1129FEBF-41B5-476B-A1AF-C55A0085B00B}.Release|ARM.Deploy.0 = Release|ARM
-		{1129FEBF-41B5-476B-A1AF-C55A0085B00B}.Release|x64.ActiveCfg = Release|x64
-		{1129FEBF-41B5-476B-A1AF-C55A0085B00B}.Release|x64.Build.0 = Release|x64
-		{1129FEBF-41B5-476B-A1AF-C55A0085B00B}.Release|x64.Deploy.0 = Release|x64
-		{1129FEBF-41B5-476B-A1AF-C55A0085B00B}.Release|x86.ActiveCfg = Release|x86
-		{1129FEBF-41B5-476B-A1AF-C55A0085B00B}.Release|x86.Build.0 = Release|x86
-		{1129FEBF-41B5-476B-A1AF-C55A0085B00B}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

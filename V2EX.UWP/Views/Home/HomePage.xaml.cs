@@ -48,5 +48,21 @@ namespace V2EX.UWP.Views
                 container.XYFocusDown = container;
             }
         }
+
+        private void OnItemGridViewSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var gridView = (GridView)sender;
+            if (gridView.ItemsPanelRoot is ItemsWrapGrid wrapGrid)
+            {
+                if (LayoutVisualStates.CurrentState == NarrowLayout)
+                {
+                    wrapGrid.ItemWidth = gridView.ActualWidth - gridView.Padding.Left - gridView.Padding.Right;
+                }
+                else
+                {
+                    wrapGrid.ItemWidth = double.NaN;
+                }
+            }
+        }
     }
 }
