@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using V2EX.UWP.Helpers;
+using V2EX.UWP.ViewModels;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -24,9 +25,28 @@ namespace V2EX.UWP.Views
     /// </summary>
     public sealed partial class HomePage : Page
     {
+        public HomeViewModel ViewModel
+        {
+            get { return DataContext as HomeViewModel; }
+        }
+
         public HomePage()
         {
             this.InitializeComponent();
+            this.Loaded += HomePage_LoadedAsync;
+        }
+
+        private async void HomePage_LoadedAsync(object sender, RoutedEventArgs e)
+        {
+            await ViewModel.LoadDataAsync();
+        }
+
+        private void OnItemGridViewContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            if (sender.ContainerFromItem(sender.Items.LastOrDefault()) is GridViewItem container)
+            {
+                container.XYFocusDown = container;
+            }
         }
     }
 }

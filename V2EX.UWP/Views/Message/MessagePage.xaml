@@ -7,11 +7,5 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid>
-        <TextBlock
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Style="{StaticResource HeaderTextBlockStyle}"
-            Text="消息" />
-    </Grid>
+    <Grid />
 </Page>

@@ -29,7 +29,6 @@ namespace V2EX.UWP.Views
     /// </summary>
     public sealed partial class ShellPage : Page
     {
-        public readonly SystemNavigationManager NavigationManager = SystemNavigationManager.GetForCurrentView();
         private ShellViewModel ViewModel
         {
             get { return DataContext as ShellViewModel; }
@@ -38,15 +37,12 @@ namespace V2EX.UWP.Views
         {
             this.InitializeComponent();
             ViewModel.Initialize(this.contentFrame);
-
-            NavigationManager.BackRequested += NavigationManager_BackRequested;
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
             #region SetupTitleBar
-
             if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.ApplicationView"))
             {
                 var titleBar = ApplicationView.GetForCurrentView().TitleBar;
@@ -60,18 +56,7 @@ namespace V2EX.UWP.Views
                     CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
                 }
             }
-
             #endregion
-        }
-
-        private void NavigationManager_BackRequested(object sender, BackRequestedEventArgs e)
-        {
-            var nav = ViewModel.NavigationService;
-            if (nav.CanGoBack)
-            {
-                nav.GoBack();
-                e.Handled = true;
-            }
         }
     }
 }

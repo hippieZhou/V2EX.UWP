@@ -12,7 +12,6 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <NavigationView
-            x:Name="navview"
             AlwaysShowHeader="False"
             Background="{ThemeResource CustomV2EXAcrylicBackgroundBrush}"
             CompactModeThresholdWidth="560"
@@ -35,7 +34,14 @@
                     Icon="Setting"
                     IsSelected="True" />
             </NavigationView.PaneFooter>
-            <Frame x:Name="contentFrame" />
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <local:PageHeader Title="{x:Bind ViewModel.Title, Mode=OneWay}" Grid.Row="0" />
+                <Frame x:Name="contentFrame" Grid.Row="1" />
+            </Grid>
         </NavigationView>
     </Grid>
 </Page>

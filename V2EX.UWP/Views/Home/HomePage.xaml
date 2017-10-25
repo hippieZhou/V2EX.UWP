@@ -5,13 +5,76 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:V2EX.UWP.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:V2EX.UWP.Models"
     DataContext="{Binding HomeViewModel, Source={StaticResource Locator}}"
     mc:Ignorable="d">
+    <Page.Resources>
+        <DataTemplate x:Key="ControlItemTemplate" x:DataType="model:TopicModel">
+            <Grid
+                x:Name="controlRoot"
+                Width="345"
+                Height="140"
+                Padding="12"
+                Background="{ThemeResource SystemControlAcrylicElementBrush}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Image
+                    Width="36"
+                    VerticalAlignment="Top"
+                    Source="{x:Bind AvatarNormal}"
+                    Stretch="Uniform" />
+                <RelativePanel Grid.Column="1" Margin="16,6,0,0">
+                    <TextBlock
+                        x:Name="titleText"
+                        Foreground="{ThemeResource SystemControlForegroundAccentBrush}"
+                        Style="{StaticResource SubtitleTextBlockStyle}"
+                        Text="{x:Bind Title}"
+                        TextLineBounds="TrimToCapHeight"
+                        TextWrapping="NoWrap" />
+                    <TextBlock
+                        Margin="0,4,0,0"
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                        RelativePanel.Below="titleText"
+                        Style="{StaticResource BodyTextBlockStyle}"
+                        Text="{x:Bind Content}"
+                        TextTrimming="CharacterEllipsis" />
+                </RelativePanel>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
     <Grid>
-        <TextBlock
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Style="{StaticResource HeaderTextBlockStyle}"
-            Text="首页" />
+        <GridView
+            x:Name="itemGridView"
+            Grid.Row="1"
+            Padding="24"
+            ContainerContentChanging="OnItemGridViewContainerContentChanging"
+            IsItemClickEnabled="True"
+            IsSwipeEnabled="False"
+            ItemTemplate="{StaticResource ControlItemTemplate}"
+            ItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}"
+            SelectionMode="None" />
+
+        <!--<VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="LayoutVisualStates">
+                <VisualState x:Name="WideLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="itemGridView.Padding" Value="14,72,14,14" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="NarrowLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="itemGridView.Padding" Value="14" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>-->
     </Grid>
 </Page>

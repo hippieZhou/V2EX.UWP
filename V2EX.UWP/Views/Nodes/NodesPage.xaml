@@ -8,11 +8,5 @@
     DataContext="{Binding NodesViewModel, Source={StaticResource Locator}}"
     mc:Ignorable="d">
 
-    <Grid>
-        <TextBlock
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Style="{StaticResource HeaderTextBlockStyle}"
-            Text="节点" />
-    </Grid>
+    <Grid />
 </Page>

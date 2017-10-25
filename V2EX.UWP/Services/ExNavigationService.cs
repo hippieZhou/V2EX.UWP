@@ -20,6 +20,11 @@ namespace V2EX.UWP.Services
         public readonly SystemNavigationManager NavigationManager = SystemNavigationManager.GetForCurrentView();
         private readonly Dictionary<string, Type> _pages = new Dictionary<string, Type>();
 
+        public ExNavigationService()
+        {
+            NavigationManager.BackRequested += NavigationManager_BackRequested;
+        }
+
         private Frame _frame;
         public Frame Frame
         {
@@ -32,14 +37,15 @@ namespace V2EX.UWP.Services
             set { _frame = value; }
         }
 
-        public string CurrentPageKey => _pages.FirstOrDefault(p => p.Value == Frame.CurrentSourcePageType).Key;
-
         public bool CanGoBack => Frame.CanGoBack;
 
         public void GoBack()
         {
             Frame.GoBack();
-            this.CurrentPageKeyEventHanler?.Invoke(this, this.CurrentPageKey);
+
+            var currentPageKey = _pages.FirstOrDefault(p => p.Value == Frame.CurrentSourcePageType).Key;
+            this.CurrentPageKeyEventHanler?.Invoke(this, currentPageKey);
+
             NavigationManager.AppViewBackButtonVisibility = CanGoBack ? AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
         }
 
@@ -70,6 +76,15 @@ namespace V2EX.UWP.Services
                 var navigationResult = Frame.Navigate(_pages[pageKey], parameter, infoOverride);
                 NavigationManager.AppViewBackButtonVisibility = CanGoBack ? AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
                 return navigationResult;
+            }
+        }
+
+        private void NavigationManager_BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            if (this.CanGoBack)
+            {
+                this.GoBack();
+                e.Handled = true;
             }
         }
     }
