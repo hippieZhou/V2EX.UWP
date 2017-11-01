@@ -13,11 +13,9 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <NavigationView
             AlwaysShowHeader="False"
-            Background="{ThemeResource CustomV2EXAcrylicBackgroundBrush}"
             CompactModeThresholdWidth="560"
             ExpandedModeThresholdWidth="560"
-            FontFamily="Segoe UI"
-            Foreground="White"
+            Foreground="Black"
             Header="{x:Bind ViewModel.SelectedItem.Content, Mode=OneWay}"
             IsSettingsVisible="False"
             MenuItemsSource="{x:Bind ViewModel.PrimaryItems, Mode=OneWay}"

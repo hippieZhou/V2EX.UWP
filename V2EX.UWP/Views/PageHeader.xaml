@@ -10,7 +10,7 @@
     VerticalAlignment="Top"
     Background="Transparent"
     FontSize="42"
-    Foreground="White"
+    Foreground="Black"
     mc:Ignorable="d">
 
     <Grid

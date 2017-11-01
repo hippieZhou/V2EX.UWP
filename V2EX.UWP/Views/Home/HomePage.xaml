@@ -11,64 +11,67 @@
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:Key="ControlItemTemplate" x:DataType="model:TopicModel">
-            <Grid
-                x:Name="controlRoot"
-                Width="350"
-                Height="140"
-                Padding="12"
-                Background="{ThemeResource SystemControlAcrylicElementBrush}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Image
-                    Width="36"
-                    VerticalAlignment="Top"
-                    Source="{x:Bind AvatarNormal}"
-                    Stretch="Uniform" />
-                <RelativePanel Grid.Column="1" Margin="16,6,0,0">
-                    <TextBlock
-                        x:Name="titleText"
-                        Foreground="{ThemeResource SystemControlForegroundAccentBrush}"
-                        Style="{StaticResource SubtitleTextBlockStyle}"
-                        Text="{x:Bind Title}"
-                        TextLineBounds="TrimToCapHeight"
-                        TextWrapping="NoWrap" />
-                    <TextBlock
-                        Margin="0,4,0,0"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                        RelativePanel.Below="titleText"
-                        Style="{StaticResource BodyTextBlockStyle}"
-                        Text="{x:Bind Content}"
-                        TextTrimming="CharacterEllipsis" />
-                </RelativePanel>
-                <VisualStateManager.VisualStateGroups>
-                    <VisualStateGroup x:Name="LayoutVisualStates">
-                        <VisualState x:Name="WideLayout">
-                            <VisualState.StateTriggers>
-                                <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint560Plus}" />
-                            </VisualState.StateTriggers>
-                            <VisualState.Setters />
-                        </VisualState>
-                        <VisualState x:Name="NarrowLayout">
-                            <VisualState.StateTriggers>
-                                <AdaptiveTrigger MinWindowWidth="0" />
-                            </VisualState.StateTriggers>
-                            <VisualState.Setters>
-                                <Setter Target="controlRoot.Width" Value="*" />
-                                <Setter Target="controlRoot.Height" Value="120" />
-                            </VisualState.Setters>
-                        </VisualState>
-                    </VisualStateGroup>
-                </VisualStateManager.VisualStateGroups>
-            </Grid>
+            <UserControl>
+                <Grid
+                    x:Name="controlRoot"
+                    Width="345"
+                    Height="140"
+                    Padding="12"
+                    Background="{ThemeResource SystemControlAcrylicElementBrush}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image
+                        Width="36"
+                        VerticalAlignment="Top"
+                        Source="{x:Bind AvatarNormal}"
+                        Stretch="Uniform" />
+                    <RelativePanel Grid.Column="1" Margin="16,6,0,0">
+                        <TextBlock
+                            x:Name="titleText"
+                            Foreground="{ThemeResource SystemControlForegroundAccentBrush}"
+                            Style="{StaticResource SubtitleTextBlockStyle}"
+                            Text="{x:Bind Title}"
+                            TextLineBounds="TrimToCapHeight"
+                            TextWrapping="NoWrap" />
+                        <TextBlock
+                            Margin="0,4,0,0"
+                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                            RelativePanel.Below="titleText"
+                            Style="{StaticResource BodyTextBlockStyle}"
+                            Text="{x:Bind Content}"
+                            TextTrimming="CharacterEllipsis" />
+                    </RelativePanel>
+
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup x:Name="LayoutVisualStates">
+                            <VisualState x:Name="WideLayout">
+                                <VisualState.StateTriggers>
+                                    <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint560Plus}" />
+                                </VisualState.StateTriggers>
+                                <VisualState.Setters />
+                            </VisualState>
+                            <VisualState x:Name="NarrowLayout">
+                                <VisualState.StateTriggers>
+                                    <AdaptiveTrigger MinWindowWidth="0" />
+                                </VisualState.StateTriggers>
+                                <VisualState.Setters>
+                                    <Setter Target="controlRoot.Width" Value="Auto" />
+                                    <Setter Target="controlRoot.Height" Value="120" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                </Grid>
+            </UserControl>
         </DataTemplate>
     </Page.Resources>
     <Grid>
         <GridView
             x:Name="itemGridView"
-            Grid.Row="1"
             Padding="24,0,0,0"
+            ContainerContentChanging="OnItemGridViewContainerContentChanging"
             IsItemClickEnabled="True"
             IsSwipeEnabled="False"
             ItemContainerStyle="{StaticResource WideGridViewItemStyle}"
