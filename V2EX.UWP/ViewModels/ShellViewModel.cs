@@ -21,13 +21,6 @@ namespace V2EX.UWP.ViewModels
     {
         public ExNavigationService NavigationService => ServiceLocator.Current.GetInstance<ExNavigationService>();
 
-        private object _title;
-        public object Title
-        {
-            get { return _title; }
-            set { Set(ref _title, value); }
-        }
-
         private NavigationViewItem _selectedItem;
         public NavigationViewItem SelectedItem
         {
@@ -36,7 +29,6 @@ namespace V2EX.UWP.ViewModels
             {
                 if (_selectedItem != value)
                     Set(ref _selectedItem, value);
-                this.Title = this.SelectedItem.Content;
             }
         }
 
@@ -86,15 +78,6 @@ namespace V2EX.UWP.ViewModels
 
             this.SelectedItem = this.PrimaryItems.FirstOrDefault();
             this.NavigationService.Navigate(this.SelectedItem.Tag.ToString());
-        }
-
-        private void NavigationManager_BackRequested(object sender, BackRequestedEventArgs e)
-        {
-            //if (this.NavigationService.CanGoBack)
-            //{
-            //    this.NavigationService.GoBack();
-            //    e.Handled = true;
-            //}
         }
     }
 }

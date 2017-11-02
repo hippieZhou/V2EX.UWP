@@ -2,6 +2,8 @@
     x:Class="V2EX.UWP.Views.HomePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:V2EX.UWP.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -14,8 +16,8 @@
             <UserControl>
                 <Grid
                     x:Name="controlRoot"
-                    Width="345"
-                    Height="140"
+                    Width="360"
+                    Height="160"
                     Padding="12"
                     Background="{ThemeResource SystemControlAcrylicElementBrush}">
                     <Grid.ColumnDefinitions>
@@ -23,6 +25,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Image
+                        Grid.Column="0"
                         Width="36"
                         VerticalAlignment="Top"
                         Source="{x:Bind AvatarNormal}"
@@ -58,7 +61,7 @@
                                 </VisualState.StateTriggers>
                                 <VisualState.Setters>
                                     <Setter Target="controlRoot.Width" Value="Auto" />
-                                    <Setter Target="controlRoot.Height" Value="120" />
+                                    <Setter Target="controlRoot.Height" Value="140" />
                                 </VisualState.Setters>
                             </VisualState>
                         </VisualStateGroup>
@@ -67,16 +70,28 @@
             </UserControl>
         </DataTemplate>
     </Page.Resources>
-    <Grid>
+    <Grid x:Name="rootGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <local:PageHeader
+            x:Name="pageHeader"
+            Title="首页"
+            Grid.Row="0"
+            FontSize="42" />
         <GridView
             x:Name="itemGridView"
+            Grid.Row="1"
             Padding="24,0,0,0"
-            ContainerContentChanging="OnItemGridViewContainerContentChanging"
+            animations:ReorderGridAnimation.Duration="300"
             IsItemClickEnabled="True"
             IsSwipeEnabled="False"
+            ItemClick="OnItemGridViewItemClick"
             ItemContainerStyle="{StaticResource WideGridViewItemStyle}"
             ItemTemplate="{StaticResource ControlItemTemplate}"
             ItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}"
+            Loaded="OnitemGridView_Loaded"
             SelectionMode="None"
             SizeChanged="OnItemGridViewSizeChanged" />
 
@@ -94,6 +109,7 @@
                     <VisualState.Setters>
                         <Setter Target="itemGridView.Padding" Value="14,0,14,0" />
                         <Setter Target="itemGridView.ItemContainerStyle" Value="{StaticResource NarrowGridViewItemStyle}" />
+                        <Setter Target="pageHeader.Visibility" Value="Collapsed" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

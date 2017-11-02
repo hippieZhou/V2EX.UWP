@@ -16,6 +16,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
@@ -56,6 +57,28 @@ namespace V2EX.UWP.Views
                     CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
                 }
             }
+            #endregion
+
+            #region 启动动画
+            // Set a fade in animation when this page enters the scene
+            var _compositor = ElementCompositionPreview.GetElementVisual(this).Compositor;
+            var fadeInAnimation = _compositor.CreateScalarKeyFrameAnimation();
+            fadeInAnimation.Target = "Opacity";
+            fadeInAnimation.Duration = TimeSpan.FromSeconds(0.3);
+            fadeInAnimation.InsertKeyFrame(0, 0);
+            fadeInAnimation.InsertKeyFrame(1, 1);
+
+            ElementCompositionPreview.GetElementVisual(this);
+            ElementCompositionPreview.SetImplicitShowAnimation(this, fadeInAnimation);
+
+            // Set a fade out animation when this page exits the scene
+            var fadeOutAnimation = _compositor.CreateScalarKeyFrameAnimation();
+            fadeOutAnimation.Target = "Opacity";
+            fadeOutAnimation.Duration = TimeSpan.FromSeconds(0.3);
+            fadeOutAnimation.InsertKeyFrame(0, 1);
+            fadeOutAnimation.InsertKeyFrame(1, 0);
+
+            ElementCompositionPreview.SetImplicitHideAnimation(this, fadeOutAnimation);
             #endregion
         }
     }

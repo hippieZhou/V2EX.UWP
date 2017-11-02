@@ -33,12 +33,7 @@
                     IsSelected="True" />
             </NavigationView.PaneFooter>
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <local:PageHeader Title="{x:Bind ViewModel.Title, Mode=OneWay}" Grid.Row="0" />
-                <Frame x:Name="contentFrame" Grid.Row="1" />
+                <Frame x:Name="contentFrame" />
             </Grid>
         </NavigationView>
     </Grid>
