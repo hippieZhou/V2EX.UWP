@@ -32,6 +32,7 @@ namespace V2EX.UWP.Views
     /// </summary>
     public sealed partial class HomePage : Page
     {
+        private static int s_persistedItemIndex;
         public HomeViewModel ViewModel
         {
             get { return DataContext as HomeViewModel; }
@@ -40,13 +41,6 @@ namespace V2EX.UWP.Views
         public HomePage()
         {
             this.InitializeComponent();
-            this.Loaded += HomePage_Loaded;
-        }
-
-        private async void HomePage_Loaded(object sender, RoutedEventArgs e)
-        {
-            await ViewModel.LoadDataAsync();
-
             #region GridView 初始化动画
             var compositor = Window.Current.Compositor;
             var animation = compositor.CreateScalarKeyFrameAnimation();
@@ -67,10 +61,25 @@ namespace V2EX.UWP.Views
             visual.StopAnimation("Translation.Y");
             visual.StartAnimation("Translation.Y", animation);
             #endregion
+
+            this.Loaded += HomePage_Loaded;
         }
-        private async void OnitemGridView_Loaded(object sender, RoutedEventArgs e)
+
+        private async void HomePage_Loaded(object sender, RoutedEventArgs e)
         {
-           
+            await ViewModel.LoadDataAsync();
+        }
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            if (e.NavigationMode == NavigationMode.Back)
+            {
+                itemGridView.Loaded += (o_, e_) =>
+                {
+                    var item = itemGridView.Items[s_persistedItemIndex];
+                    itemGridView.ScrollIntoView(item);
+                };
+            }
         }
 
         private void OnItemGridViewSizeChanged(object sender, SizeChangedEventArgs e)
@@ -91,6 +100,8 @@ namespace V2EX.UWP.Views
 
         private void OnItemGridViewItemClick(object sender, ItemClickEventArgs e)
         {
+            s_persistedItemIndex = itemGridView.Items.IndexOf(e.ClickedItem);
+
             var item = (TopicModel)e.ClickedItem;
             var nav = ServiceLocator.Current.GetInstance<ShellViewModel>().NavigationService;
             nav.Navigate(typeof(HomeDetailViewModel).FullName, item);

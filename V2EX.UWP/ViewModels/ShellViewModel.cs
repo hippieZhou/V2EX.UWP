@@ -28,7 +28,11 @@ namespace V2EX.UWP.ViewModels
             set
             {
                 if (_selectedItem != value)
+                {
                     Set(ref _selectedItem, value);
+                    if (this.SelectedItem != null)
+                        this.NavigationService.Navigate(this.SelectedItem.Tag.ToString());
+                }
             }
         }
 
@@ -48,15 +52,10 @@ namespace V2EX.UWP.ViewModels
                     ?? (_itemInvokedCommand = new RelayCommand<NavigationViewItemInvokedEventArgs>(
                     args =>
                     {
-                        if (args.InvokedItem == this.SelectedItem.Content)
-                            return;
-
                         this.SelectedItem = this.PrimaryItems.FirstOrDefault(p => p.Content == args.InvokedItem);
-                        this.NavigationService.Navigate(this.SelectedItem.Tag.ToString());
                     }));
             }
         }
-
 
         public void Initialize(Frame frame)
         {
@@ -77,7 +76,6 @@ namespace V2EX.UWP.ViewModels
             this.PrimaryItems.Add(new NavigationViewItem { Tag = typeof(LibraryViewModel).FullName, Icon = new SymbolIcon(Symbol.Library), Content = "收藏" });
 
             this.SelectedItem = this.PrimaryItems.FirstOrDefault();
-            this.NavigationService.Navigate(this.SelectedItem.Tag.ToString());
         }
     }
 }

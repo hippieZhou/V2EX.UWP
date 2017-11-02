@@ -18,17 +18,18 @@ using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace V2EX.UWP.Views.Home
+namespace V2EX.Animation
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class HomeDetailPage : Page
+    public sealed partial class NavigationFlowDestinationPage : Page
     {
         private Compositor _compositor;
-        public HomeDetailPage()
+
+        public NavigationFlowDestinationPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
             _compositor = ElementCompositionPreview.GetElementVisual(this).Compositor;
 
@@ -97,6 +98,31 @@ namespace V2EX.UWP.Views.Home
             Canvas.SetZIndex(this, 1);
             ElementCompositionPreview.GetElementVisual(this);
             ElementCompositionPreview.SetImplicitHideAnimation(this, fadeOut);
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            ConnectedAnimationService
+                .GetForCurrentView()
+                .GetAnimation("BorderSource")
+                .TryStart(BorderDest, new[] { DescriptionRoot });
+
+            ItemTextBlock.Text = $"Item {(int)e.Parameter}";
+        }
+
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            base.OnNavigatingFrom(e);
+            ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("BorderDest", BorderDest);
+        }
+
+        private void GoBackButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.Frame.CanGoBack)
+            {
+                this.Frame.GoBack();
+            }
         }
     }
 }

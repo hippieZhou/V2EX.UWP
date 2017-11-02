@@ -91,7 +91,6 @@
             ItemContainerStyle="{StaticResource WideGridViewItemStyle}"
             ItemTemplate="{StaticResource ControlItemTemplate}"
             ItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}"
-            Loaded="OnitemGridView_Loaded"
             SelectionMode="None"
             SizeChanged="OnItemGridViewSizeChanged" />
 
