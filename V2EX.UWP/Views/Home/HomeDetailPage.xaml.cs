@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.Practices.ServiceLocation;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using V2EX.UWP.ViewModels;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Composition;
@@ -25,6 +27,8 @@ namespace V2EX.UWP.Views.Home
     /// </summary>
     public sealed partial class HomeDetailPage : Page
     {
+        private bool oldIsPaneOpen;
+        private ShellViewModel Shell => ServiceLocator.Current.GetInstance<ShellViewModel>();
         private Compositor _compositor;
         public HomeDetailPage()
         {

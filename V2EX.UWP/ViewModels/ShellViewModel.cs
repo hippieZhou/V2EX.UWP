@@ -14,6 +14,7 @@ using Windows.UI.Core;
 using GalaSoft.MvvmLight.Views;
 using V2EX.UWP.Services;
 using System.Diagnostics;
+using Windows.UI.Xaml.Navigation;
 
 namespace V2EX.UWP.ViewModels
 {
@@ -27,12 +28,9 @@ namespace V2EX.UWP.ViewModels
             get { return _selectedItem; }
             set
             {
-                if (_selectedItem != value)
-                {
-                    Set(ref _selectedItem, value);
-                    if (this.SelectedItem != null)
-                        this.NavigationService.Navigate(this.SelectedItem.Tag.ToString());
-                }
+                Set(ref _selectedItem, value);
+                if (SelectedItem != null)
+                    NavigationService.Navigate(SelectedItem.Tag.ToString());
             }
         }
 
@@ -52,7 +50,7 @@ namespace V2EX.UWP.ViewModels
                     ?? (_itemInvokedCommand = new RelayCommand<NavigationViewItemInvokedEventArgs>(
                     args =>
                     {
-                        this.SelectedItem = this.PrimaryItems.FirstOrDefault(p => p.Content == args.InvokedItem);
+                        SelectedItem = PrimaryItems.FirstOrDefault(p => p.Content == args.InvokedItem);
                     }));
             }
         }
@@ -60,22 +58,26 @@ namespace V2EX.UWP.ViewModels
         public void Initialize(Frame frame)
         {
             NavigationService.Frame = frame;
-            NavigationService.CurrentPageKeyEventHanler += (sender, e) => 
-            {
-                this.SelectedItem = this.PrimaryItems.FirstOrDefault(p => p.Tag == e);
-            };
+            NavigationService.Navigated += NavigationService_Navigated;
+
             PopulateNavItems();
+        }
+
+        private void NavigationService_Navigated(object sender, NavigationEventArgs e)
+        {
+            SelectedItem = PrimaryItems.FirstOrDefault(p => p.Tag.ToString() == NavigationService.CurrentPageKey);
         }
 
         private void PopulateNavItems()
         {
-            this.PrimaryItems.Clear();
-            this.PrimaryItems.Add(new NavigationViewItem { Tag = typeof(HomeViewModel).FullName, Icon = new SymbolIcon(Symbol.Home), Content = "首页" });
-            this.PrimaryItems.Add(new NavigationViewItem { Tag = typeof(NodesViewModel).FullName, Icon = new SymbolIcon(Symbol.ViewAll), Content = "节点" });
-            this.PrimaryItems.Add(new NavigationViewItem { Tag = typeof(MessageViewModel).FullName, Icon = new SymbolIcon(Symbol.Message), Content = "通知" });
-            this.PrimaryItems.Add(new NavigationViewItem { Tag = typeof(LibraryViewModel).FullName, Icon = new SymbolIcon(Symbol.Library), Content = "收藏" });
+            PrimaryItems.Clear();
 
-            this.SelectedItem = this.PrimaryItems.FirstOrDefault();
+            PrimaryItems.Add(new NavigationViewItem { Tag = typeof(HomeViewModel).FullName, Icon = new SymbolIcon(Symbol.Home), Content = "首页" });
+            PrimaryItems.Add(new NavigationViewItem { Tag = typeof(NodesViewModel).FullName, Icon = new SymbolIcon(Symbol.ViewAll), Content = "节点" });
+            PrimaryItems.Add(new NavigationViewItem { Tag = typeof(MessageViewModel).FullName, Icon = new SymbolIcon(Symbol.Message), Content = "通知" });
+            PrimaryItems.Add(new NavigationViewItem { Tag = typeof(LibraryViewModel).FullName, Icon = new SymbolIcon(Symbol.Library), Content = "收藏" });
+
+            SelectedItem = PrimaryItems.FirstOrDefault();
         }
     }
 }
