@@ -78,17 +78,10 @@ namespace V2EX
             var titleBar = ApplicationView.GetForCurrentView().TitleBar;
             if (titleBar != null)
             {
-                titleBar.ForegroundColor = Colors.Black;
-                titleBar.InactiveForegroundColor = Colors.Black;
-                titleBar.ButtonForegroundColor = Colors.Black;
-                titleBar.ButtonHoverForegroundColor = Colors.Black;
-                titleBar.ButtonInactiveForegroundColor = Colors.Black;
-                titleBar.ButtonPressedForegroundColor = Colors.Black;
-
-                titleBar.BackgroundColor = Colors.Transparent;
-                titleBar.ButtonBackgroundColor = Colors.Transparent;
-                titleBar.InactiveBackgroundColor = Colors.Transparent;
-                titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+                var viewTitleBar = ApplicationView.GetForCurrentView().TitleBar;
+                viewTitleBar.ButtonBackgroundColor = Colors.Transparent;
+                viewTitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+                viewTitleBar.ButtonForegroundColor = (Color)Resources["SystemBaseHighColor"];
             }
 
         }

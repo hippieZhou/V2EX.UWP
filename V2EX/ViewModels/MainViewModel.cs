@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using V2EX.Commons;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Controls;
 
@@ -64,8 +65,8 @@ namespace V2EX.ViewModels
         private void InitializeMainMenus()
         {
             this.PrimaryMenus.Clear();
-            PrimaryMenus.Add(CreateNavigationViewItem(new SymbolIcon(Symbol.Home), "Home", typeof(HomeViewModel).FullName));
-            PrimaryMenus.Add(CreateNavigationViewItem(new SymbolIcon(Symbol.ViewAll), "Nodes", typeof(NodesViewModel).FullName));
+            PrimaryMenus.Add(CreateNavigationViewItem(new SymbolIcon(Symbol.Home), "PrimaryMenus_Home".GetLocalized(), typeof(HomeViewModel).FullName));
+            PrimaryMenus.Add(CreateNavigationViewItem(new SymbolIcon(Symbol.ViewAll), "PrimaryMenus_Nodes".GetLocalized(), typeof(NodesViewModel).FullName));
             NavigateToByNavigationViewItem(PrimaryMenus.OfType<NavigationViewItem>().FirstOrDefault());
         }
 

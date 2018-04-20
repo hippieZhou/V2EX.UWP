@@ -2,6 +2,7 @@
     x:Class="V2EX.Views.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:appmodel="using:Windows.ApplicationModel"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
@@ -11,7 +12,14 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <TextBlock
+            x:Name="AppTitle"
+            Canvas.ZIndex="1"
+            IsHitTestVisible="False"
+            Style="{StaticResource CaptionTextBlockStyle}"
+            Text="{x:Bind appmodel:Package.Current.DisplayName}" />
         <NavigationView
+            Canvas.ZIndex="0"
             Header="{x:Bind ViewModel.Header, Mode=OneWay}"
             IsSettingsVisible="False"
             MenuItemsSource="{x:Bind ViewModel.PrimaryMenus}"

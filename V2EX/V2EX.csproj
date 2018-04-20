@@ -96,6 +96,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Commons\ProcessTime.cs" />
+    <Compile Include="Commons\ResourceExtensions.cs" />
     <Compile Include="Models\Topics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\WebService.cs" />
@@ -117,6 +118,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <PRIResource Include="Strings\zh-cn\Resources.resw" />
     <None Include="V2EX_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

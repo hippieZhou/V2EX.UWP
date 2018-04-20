@@ -4,8 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using V2EX.ViewModels;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -28,6 +30,17 @@ namespace V2EX.Views
         {
             this.InitializeComponent();
             ViewModel.Initialize(ContentFrame);
+            Window.Current.CoreWindow.SizeChanged += (s, e) => UpdateAppTitle();
+            CoreApplication.GetCurrentView().TitleBar.LayoutMetricsChanged += (s, e) => UpdateAppTitle();
         }
+
+        void UpdateAppTitle()
+        {
+            var full = (ApplicationView.GetForCurrentView().IsFullScreenMode);
+            var left = 12 + (full ? 0 : CoreApplication.GetCurrentView().TitleBar.SystemOverlayLeftInset);
+            AppTitle.Margin = new Thickness(left, 8, 0, 0);
+        }
+
+
     }
 }
