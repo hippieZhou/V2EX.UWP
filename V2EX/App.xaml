@@ -8,7 +8,6 @@
     <Application.Resources>
         <ResourceDictionary>
             <vm:ViewModelLocator x:Key="Locator" />
-            <SolidColorBrush x:Key="ApplicationPageBackgroundThemeBaseBrush" Color="#FAFAFA" />
         </ResourceDictionary>
     </Application.Resources>
 

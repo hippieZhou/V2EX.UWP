@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using V2EX.ViewModels;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -21,13 +20,11 @@ namespace V2EX.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class HomePage : Page
     {
-        public MainViewModel ViewModel => DataContext as MainViewModel;
-        public MainPage()
+        public HomePage()
         {
             this.InitializeComponent();
-            ViewModel.Initialize(ContentFrame);
         }
     }
 }

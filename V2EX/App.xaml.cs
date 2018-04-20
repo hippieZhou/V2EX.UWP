@@ -5,8 +5,11 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -66,11 +69,28 @@ namespace V2EX
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    rootFrame.Navigate(typeof(Views.MainPage), e.Arguments);
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            if (titleBar != null)
+            {
+                titleBar.ForegroundColor = Colors.Black;
+                titleBar.InactiveForegroundColor = Colors.Black;
+                titleBar.ButtonForegroundColor = Colors.Black;
+                titleBar.ButtonHoverForegroundColor = Colors.Black;
+                titleBar.ButtonInactiveForegroundColor = Colors.Black;
+                titleBar.ButtonPressedForegroundColor = Colors.Black;
+
+                titleBar.BackgroundColor = Colors.Transparent;
+                titleBar.ButtonBackgroundColor = Colors.Transparent;
+                titleBar.InactiveBackgroundColor = Colors.Transparent;
+                titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+            }
+
         }
 
         /// <summary>
