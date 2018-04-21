@@ -8,6 +8,10 @@
     <Application.Resources>
         <ResourceDictionary>
             <vm:ViewModelLocator x:Key="Locator" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/ScrollBar.xaml" />
+                <ResourceDictionary Source="/Styles/Pivot.xaml" />
+            </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
 

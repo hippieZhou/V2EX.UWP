@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using V2EX.ViewModels;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -22,9 +23,16 @@ namespace V2EX.Views
     /// </summary>
     public sealed partial class HomePage : Page
     {
+        public HomeViewModel ViewModel => DataContext as HomeViewModel;
         public HomePage()
         {
             this.InitializeComponent();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            ViewModel.Initialize();
+            base.OnNavigatedTo(e);
         }
     }
 }

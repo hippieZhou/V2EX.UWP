@@ -5,13 +5,27 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:V2EX.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:V2EX.ViewModels"
+    DataContext="{Binding Home, Source={StaticResource Locator}}"
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <TextBlock
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Style="{StaticResource HeaderTextBlockStyle}"
-            Text="Home" />
+        <Pivot ItemsSource="{x:Bind ViewModel.TabMenus}">
+            <Pivot.ItemTemplate>
+                <DataTemplate x:DataType="vm:TabViewModel">
+                    <PivotItem Header="{x:Bind Header}" Tag="{x:Bind Tag}">
+                        <ScrollViewer>
+                            <GridView HorizontalAlignment="Center" ItemsSource="{x:Bind News}">
+                                <GridView.ItemTemplate>
+                                    <DataTemplate>
+                                        <GridViewItem MinWidth="360" Content="AAAA" />
+                                    </DataTemplate>
+                                </GridView.ItemTemplate>
+                            </GridView>
+                        </ScrollViewer>
+                    </PivotItem>
+                </DataTemplate>
+            </Pivot.ItemTemplate>
+        </Pivot>
     </Grid>
 </Page>

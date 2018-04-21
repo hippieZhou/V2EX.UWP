@@ -49,7 +49,7 @@ namespace V2EX.ViewModels
                     NavigationViewItem item = args.SelectedItem as NavigationViewItem;
                     if (item == null)
                         return;
-                    NavigateToByNavigationViewItem(item);
+                    NavigationService.NavigateTo(item.Tag?.ToString());
                 }));
             }
         }
@@ -67,7 +67,8 @@ namespace V2EX.ViewModels
             this.PrimaryMenus.Clear();
             PrimaryMenus.Add(CreateNavigationViewItem(new SymbolIcon(Symbol.Home), "PrimaryMenus_Home".GetLocalized(), typeof(HomeViewModel).FullName));
             PrimaryMenus.Add(CreateNavigationViewItem(new SymbolIcon(Symbol.ViewAll), "PrimaryMenus_Nodes".GetLocalized(), typeof(NodesViewModel).FullName));
-            NavigateToByNavigationViewItem(PrimaryMenus.OfType<NavigationViewItem>().FirstOrDefault());
+            var first = PrimaryMenus.OfType<NavigationViewItem>().FirstOrDefault();
+            NavigationService.NavigateTo(first.Tag?.ToString());
         }
 
         private NavigationViewItem CreateNavigationViewItem(IconElement icon, object content, object vm)
@@ -91,12 +92,7 @@ namespace V2EX.ViewModels
             NavigationService.CurrentFrame.Navigated += CurrentFrame_Navigated;
             SystemNavigationManager.GetForCurrentView().BackRequested += MainViewModel_BackRequested;
         }
-        private void NavigateToByNavigationViewItem(NavigationViewItem menu)
-        {
-            if (menu == null)
-                return;
-            NavigationService.NavigateTo(menu.Tag?.ToString());
-        }
+
         private void CurrentFrame_Navigated(object sender, Windows.UI.Xaml.Navigation.NavigationEventArgs e)
         {
             Frame cf = NavigationService.CurrentFrame;
@@ -104,7 +100,7 @@ namespace V2EX.ViewModels
             string key = NavigationService.GetKeyForPage(cf.CurrentSourcePageType);
             SelectedMenu = PrimaryMenus.OfType<NavigationViewItem>().FirstOrDefault(p => p.Tag?.ToString() == key);
 
-            Header = SelectedMenu.Content;
+            Header = SelectedMenu?.Content;
 
             bool b = cf.BackStackDepth > 0;
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility =
