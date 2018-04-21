@@ -23,12 +23,12 @@
             Header="{x:Bind ViewModel.Header, Mode=OneWay}"
             IsSettingsVisible="False"
             MenuItemsSource="{x:Bind ViewModel.PrimaryMenus}"
-            SelectedItem="{x:Bind ViewModel.SelectedMenu, Mode=OneWay}">
-            <i:Interaction.Behaviors>
+            SelectedItem="{x:Bind ViewModel.SelectedMenu}">
+            <!--<i:Interaction.Behaviors>
                 <ic:EventTriggerBehavior EventName="SelectionChanged">
                     <ic:InvokeCommandAction Command="{x:Bind ViewModel.ItemSelectedCmd}" />
                 </ic:EventTriggerBehavior>
-            </i:Interaction.Behaviors>
+            </i:Interaction.Behaviors>-->
             <Frame x:Name="ContentFrame" Margin="24">
                 <Frame.ContentTransitions>
                     <TransitionCollection>

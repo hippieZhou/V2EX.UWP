@@ -2,11 +2,6 @@
 
 namespace V2EX.Models
 {
-    public class Rootobject
-    {
-        public Topic[] Topics { get; set; }
-    }
-
     public class Topic
     {
         [JsonProperty(PropertyName = "id")]

@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using V2EX.Commons;
+using V2EX.Models;
 
 namespace V2EX.Services
 {
@@ -18,9 +19,7 @@ namespace V2EX.Services
     public class WebService: SingletonProvider<WebService>
     {
         #region URLs
-        private const string HTTP_API_URL = "http://www.v2ex.com/api";
         private const string HTTPS_API_URL = "https://www.v2ex.com/api";
-        public const string HTTP_BASE_URL = "http://www.v2ex.com";
         public const string HTTPS_BASE_URL = "https://www.v2ex.com";
 
         private const string API_LATEST = "/topics/latest.json";
@@ -74,6 +73,43 @@ namespace V2EX.Services
             {
                 callback(default(T), ex);
             }
+        }
+
+        private async Task GetTopicsAsync(string uri, Action<IEnumerable<Topic>, Exception> callback)
+        {
+            await GetJsonAsync(uri, (json, ex) =>
+            {
+                if (!string.IsNullOrWhiteSpace(json) && ex == null)
+                {
+                    DeserializeObject<IEnumerable<Topic>>(json, (list, innerEx) =>
+                     {
+                         if (list != null && innerEx == null)
+                             callback(list, null);
+                         else
+                             callback(null, innerEx);
+                     });
+                }
+                else
+                    callback(null, ex);
+            });
+        }
+
+        public async Task<IEnumerable<Topic>> GetHotTopicsAsync(bool refresh = true)
+        {
+            List<Topic> topics = new List<Topic>();
+            if (refresh)
+            {
+                await GetTopicsAsync(HTTPS_API_URL + API_HOT, (list, ex) =>
+                {
+                    if (ex == null)
+                        topics.AddRange(list);
+                });
+            }
+            else
+            {
+
+            }
+            return topics;
         }
     }
 }

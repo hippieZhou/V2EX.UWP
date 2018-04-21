@@ -2,12 +2,15 @@
     x:Class="V2EX.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="using:V2EX.Converters"
     xmlns:local="using:V2EX"
     xmlns:vm="using:V2EX.ViewModels"
     RequestedTheme="Light">
     <Application.Resources>
         <ResourceDictionary>
             <vm:ViewModelLocator x:Key="Locator" />
+            <c:StringFormateValueConverter x:Key="StringFormateValueConverter" />
+            <c:DateTimeValueConverter x:Key="DateTimeValueConverter" />
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Styles/ScrollBar.xaml" />
                 <ResourceDictionary Source="/Styles/Pivot.xaml" />

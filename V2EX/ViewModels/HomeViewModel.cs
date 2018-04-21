@@ -1,10 +1,13 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using V2EX.Models;
+using V2EX.Services;
 using Windows.UI.Xaml.Controls;
 
 namespace V2EX.ViewModels
@@ -16,6 +19,26 @@ namespace V2EX.ViewModels
         {
             get { return _tabMenus; }
             set { Set(ref _tabMenus, value); }
+        }
+
+        private TabViewModel _selectedTab;
+        public TabViewModel SelectedTab
+        {
+            get { return _selectedTab; }
+            set { Set(ref _selectedTab, value); }
+        }
+
+        private RelayCommand<TabViewModel> _itemSelectedCmd;
+        public RelayCommand<TabViewModel> ItemSelectedCmd
+        {
+            get
+            {
+                return _itemSelectedCmd ?? (_itemSelectedCmd = new RelayCommand<TabViewModel>(
+                    (args) =>
+                    {
+                        args?.LoadNewsAsync();
+                    }));
+            }
         }
 
         public void Initialize()
@@ -37,6 +60,9 @@ namespace V2EX.ViewModels
             TabMenus.Add(new TabViewModel("最热", "hot"));
             TabMenus.Add(new TabViewModel("全部", "all"));
             TabMenus.Add(new TabViewModel("R2", "r2"));
+
+            SelectedTab = TabMenus.FirstOrDefault();
+            ItemSelectedCmd.Execute(SelectedTab);
         }
     }
 
@@ -45,23 +71,27 @@ namespace V2EX.ViewModels
         public object Header { get; set; }
         public object Tag { get; set; }
 
-        private ObservableCollection<object> _news = new ObservableCollection<object>();
-        public ObservableCollection<object> News
+        private ObservableCollection<Topic> _topics = new ObservableCollection<Topic>();
+        public ObservableCollection<Topic> Topics
         {
-            get { return _news; }
-            set { Set(ref _news, value); }
+            get { return _topics; }
+            set { Set(ref _topics, value); }
         }
-
 
         public TabViewModel(string header,object tag)
         {
             Header = header;
             Tag = tag;
+        }
 
-            News.Clear();
-            for (int i = 0; i < 100; i++)
+        internal async Task LoadNewsAsync()
+        {
+            Topics.Clear();
+
+            var list = await WebService.Instance.GetHotTopicsAsync();
+            foreach (var item in list)
             {
-                News.Add(i);
+                Topics.Add(item);
             }
         }
 
