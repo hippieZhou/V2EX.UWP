@@ -13,16 +13,23 @@ namespace V2EX.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (parameter == null)
+            try
+            {
+                if (parameter == null)
+                    return value;
+
+                if (parameter.ToString() == "https:")
+                    return new BitmapImage() { UriSource = new Uri($"{parameter}{value}") };
+
+                if (parameter.ToString() == "..." && value.ToString().Length > 52)
+                    return $"{value.ToString().Substring(0, 52)}{parameter}";
+
                 return value;
-
-            if (parameter.ToString() == "https:")
-                return new BitmapImage() { UriSource = new Uri($"{parameter}{value}") };
-
-            if (parameter.ToString() == "..." && value.ToString().Length > 52)
-                return $"{value.ToString().Substring(0, 52)}{parameter}";
-
-            return value;
+            }
+            catch (Exception ex)
+            {
+                return value;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

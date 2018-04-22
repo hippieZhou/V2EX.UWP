@@ -21,24 +21,13 @@ namespace V2EX.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class HomePage : Page
+    public sealed partial class SettingsPage : Page
     {
-        public HomeViewModel ViewModel => DataContext as HomeViewModel;
-        public HomePage()
+        public SettingsViewModel ViewModel => DataContext as SettingsViewModel;
+
+        public SettingsPage()
         {
             this.InitializeComponent();
-        }
-
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
-        {
-            await ViewModel.InitializeAsync();
-            base.OnNavigatedTo(e);
-        }
-
-        private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var handler = sender as GridView;
-            ViewModel.TopicSelectedCmd.Execute(handler?.SelectedItem);
         }
     }
 }

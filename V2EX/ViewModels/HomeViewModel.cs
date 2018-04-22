@@ -1,5 +1,7 @@
-﻿using GalaSoft.MvvmLight;
+﻿using CommonServiceLocator;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -34,33 +36,41 @@ namespace V2EX.ViewModels
             get
             {
                 return _itemSelectedCmd ?? (_itemSelectedCmd = new RelayCommand<TabViewModel>(
-                    (args) =>
+                     (args) =>
                     {
-                        args?.LoadNewsAsync();
+                        args?.LoadTabTopicsAsync();
                     }));
             }
         }
 
-        public void Initialize()
+        private RelayCommand<Topic> _topicSelectedCmd;
+        public RelayCommand<Topic> TopicSelectedCmd
         {
-            InitializeMenus();
+            get
+            {
+                return _topicSelectedCmd ?? (_topicSelectedCmd = new RelayCommand<Topic>(
+                    (topic) =>
+                    {
+                        var navigationService = ServiceLocator.Current.GetInstance<NavigationService>();
+                        navigationService.NavigateTo(typeof(TopicViewModel).FullName, topic);
+                    },
+                    (topic) => topic != null));
+            }
         }
 
-        private void InitializeMenus()
+        public async Task InitializeAsync()
+        {
+            await InitializeTabMenusAsync();
+        }
+
+        private async Task InitializeTabMenusAsync()
         {
             TabMenus.Clear();
-            TabMenus.Add(new TabViewModel("技术", "tech"));
-            TabMenus.Add(new TabViewModel("创意", "creative"));
-            TabMenus.Add(new TabViewModel("好玩", "play"));
-            TabMenus.Add(new TabViewModel("Apple", "apple"));
-            TabMenus.Add(new TabViewModel("酷工作", "jobs"));
-            TabMenus.Add(new TabViewModel("交易", "deals"));
-            TabMenus.Add(new TabViewModel("城市", "city"));
-            TabMenus.Add(new TabViewModel("问与答", "qna"));
-            TabMenus.Add(new TabViewModel("最热", "hot"));
-            TabMenus.Add(new TabViewModel("全部", "all"));
-            TabMenus.Add(new TabViewModel("R2", "r2"));
-
+            var dic = await WebService.Instance.GetHomeTabsAsync();
+            foreach (var item in dic)
+            {
+                TabMenus.Add(new TabViewModel(item.Key, item.Value));
+            }
             SelectedTab = TabMenus.FirstOrDefault();
             ItemSelectedCmd.Execute(SelectedTab);
         }
@@ -69,7 +79,7 @@ namespace V2EX.ViewModels
     public class TabViewModel : ObservableObject
     {
         public object Header { get; set; }
-        public object Tag { get; set; }
+        public string Tag { get; set; }
 
         private ObservableCollection<Topic> _topics = new ObservableCollection<Topic>();
         public ObservableCollection<Topic> Topics
@@ -78,17 +88,17 @@ namespace V2EX.ViewModels
             set { Set(ref _topics, value); }
         }
 
-        public TabViewModel(string header,object tag)
+        public TabViewModel(string header,string tag)
         {
             Header = header;
             Tag = tag;
         }
 
-        internal async Task LoadNewsAsync()
+        internal async Task LoadTabTopicsAsync()
         {
             Topics.Clear();
 
-            var list = await WebService.Instance.GetHotTopicsAsync();
+            var list = await WebService.Instance.GetTabTopicsAsync(Tag);
             foreach (var item in list)
             {
                 Topics.Add(item);

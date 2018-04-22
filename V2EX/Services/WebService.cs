@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using HtmlAgilityPack;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -110,6 +111,66 @@ namespace V2EX.Services
 
             }
             return topics;
+        }
+
+        public async Task<Dictionary<string, string>> GetHomeTabsAsync()
+        {
+            Dictionary<string, string> tabDic = new Dictionary<string, string>();
+            await GetJsonAsync(HTTPS_BASE_URL, (html, ex) => 
+            {
+                if (!string.IsNullOrWhiteSpace(html) && ex == null)
+                {
+                    HtmlDocument doc = new HtmlDocument();
+                    doc.LoadHtml(html);
+                    var tabNode = doc.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[2]/div[1]/div[3]/div[2]/div[1]");
+                    if (tabNode != null)
+                    {
+                        foreach (var node in tabNode.ChildNodes)
+                        {
+                            string text = node.InnerText;
+                            string href = node.GetAttributeValue("href", "");
+                            if (!string.IsNullOrWhiteSpace(text))
+                                tabDic.Add(text, href);
+                        }
+                    }
+                }
+            });
+            return tabDic;
+        }
+
+        public async Task<IEnumerable<Topic>> GetTabTopicsAsync(string url)
+        {
+            List<Topic> list = new List<Topic>();
+
+            string nav = HTTPS_BASE_URL + url;
+            await GetJsonAsync(nav, (html, ex) => 
+            {
+                if (!string.IsNullOrWhiteSpace(html) && ex == null)
+                {
+                    HtmlDocument doc = new HtmlDocument();
+                    doc.LoadHtml(html);
+                    var rootNode = doc.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[2]/div[1]/div[3]/div[2]");
+
+                    for (int i = 0; i < rootNode.ChildNodes.Count; i++)
+                    {
+                        if (rootNode.ChildNodes[i].Name == "div" && rootNode.ChildNodes[i].GetAttributeValue("class", "") == "cell item")
+                        {
+                            var node = rootNode.ChildNodes[i].SelectSingleNode($"/html[1]/body[1]/div[2]/div[1]/div[3]/div[2]/div[3]/table[1]/tr[{i + 1}]");
+                            var result = node.InnerText.Trim().Split(new[] { '\n' }).Where(p => !string.IsNullOrWhiteSpace(p)).ToArray();
+                            if (result.Count() >= 3)
+                            {
+                                var topic = new Topic();
+                                topic.Title = result[0].Trim();
+                                topic.Replies = Convert.ToInt32(result[2].Trim());
+
+                                list.Add(topic);
+                            }
+                        }
+                    }
+                }
+            });
+
+            return list;
         }
     }
 }

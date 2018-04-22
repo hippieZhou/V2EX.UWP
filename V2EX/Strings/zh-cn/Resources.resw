@@ -123,4 +123,7 @@
   <data name="PrimaryMenus_Nodes" xml:space="preserve">
     <value>节点</value>
   </data>
+  <data name="PrimaryMenus_Settings" xml:space="preserve">
+    <value>设置</value>
+  </data>
 </root>

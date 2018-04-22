@@ -5,12 +5,14 @@ using GalaSoft.MvvmLight.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using V2EX.Commons;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace V2EX.ViewModels
 {
@@ -23,6 +25,12 @@ namespace V2EX.ViewModels
         {
             get { return _header; }
             set { Set(ref _header, value); }
+        }
+        private bool _alwaysShowHeader = true;
+        public bool AlwaysShowHeader
+        {
+            get { return _alwaysShowHeader; }
+            set { Set(ref _alwaysShowHeader, value); }
         }
 
         private ObservableCollection<NavigationViewItemBase> _primaryMenus = new ObservableCollection<NavigationViewItemBase>();
@@ -46,13 +54,23 @@ namespace V2EX.ViewModels
             {
                 return _itemSelectedCmd ?? (_itemSelectedCmd = new RelayCommand<NavigationViewSelectionChangedEventArgs>(args =>
                 {
-                    NavigationViewItem item = args.SelectedItem as NavigationViewItem;
+                    NavigationViewItem item = args.IsSettingsSelected ?
+                    CreateNavigationViewItem(new SymbolIcon(Symbol.Setting), "PrimaryMenus_Settings".GetLocalized(), typeof(SettingsViewModel).FullName) : args.SelectedItem as NavigationViewItem;
+
                     if (item == null)
                         return;
                     NavigationService.NavigateTo(item.Tag?.ToString());
                 }));
             }
         }
+
+        private BitmapImage _profilePicture;
+        public BitmapImage ProfilePicture
+        {
+            get { return _profilePicture; }
+            set { Set(ref _profilePicture, value); }
+        }
+
 
         public void Initialize(Frame contentFrame)
         {
@@ -100,7 +118,26 @@ namespace V2EX.ViewModels
             string key = NavigationService.GetKeyForPage(cf.CurrentSourcePageType);
             SelectedMenu = PrimaryMenus.OfType<NavigationViewItem>().FirstOrDefault(p => p.Tag?.ToString() == key);
 
-            Header = SelectedMenu?.Content;
+            switch (key)
+            {
+                case "V2EX.ViewModels.HomeViewModel":
+                    Header = "PrimaryMenus_Home".GetLocalized();
+                    AlwaysShowHeader = true;
+                    break;
+                case "V2EX.ViewModels.NodesViewModel":
+                    Header = "PrimaryMenus_Nodes".GetLocalized();
+                    AlwaysShowHeader = true;
+                    break;
+                case "V2EX.ViewModels.SettingsViewModel":
+                    Header = "PrimaryMenus_Settings".GetLocalized();
+                    AlwaysShowHeader = true;
+                    break;
+                case "V2EX.ViewModels.TopicViewModel":
+                    AlwaysShowHeader = false;
+                    break;
+                default:
+                    break;
+            }
 
             bool b = cf.BackStackDepth > 0;
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility =

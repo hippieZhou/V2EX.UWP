@@ -19,16 +19,17 @@
             Style="{StaticResource CaptionTextBlockStyle}"
             Text="{x:Bind appmodel:Package.Current.DisplayName}" />
         <NavigationView
+            AlwaysShowHeader="{x:Bind ViewModel.AlwaysShowHeader, Mode=OneWay}"
             Canvas.ZIndex="0"
             Header="{x:Bind ViewModel.Header, Mode=OneWay}"
-            IsSettingsVisible="False"
+            IsSettingsVisible="True"
             MenuItemsSource="{x:Bind ViewModel.PrimaryMenus}"
-            SelectedItem="{x:Bind ViewModel.SelectedMenu}">
-            <!--<i:Interaction.Behaviors>
+            SelectedItem="{x:Bind ViewModel.SelectedMenu, Mode=OneWay}">
+            <i:Interaction.Behaviors>
                 <ic:EventTriggerBehavior EventName="SelectionChanged">
                     <ic:InvokeCommandAction Command="{x:Bind ViewModel.ItemSelectedCmd}" />
                 </ic:EventTriggerBehavior>
-            </i:Interaction.Behaviors>-->
+            </i:Interaction.Behaviors>
             <Frame x:Name="ContentFrame" Margin="24">
                 <Frame.ContentTransitions>
                     <TransitionCollection>
@@ -37,24 +38,13 @@
                 </Frame.ContentTransitions>
             </Frame>
             <NavigationView.PaneFooter>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="32" />
-                    </Grid.RowDefinitions>
+                <Grid Background="{StaticResource ButtonDisabledBackgroundThemeBrush}">
                     <PersonPicture
                         Grid.Row="0"
+                        Margin="24"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        ProfilePicture="https://docs.microsoft.com/en-us/windows/uwp/contacts-and-calendar/images/shoulder-tap-static-payload.png" />
-                    <Grid Grid.Row="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid Grid.Column="0" Background="Red" />
-                        <Grid Grid.Column="1" Background="Green" />
-                    </Grid>
+                        ProfilePicture="{x:Bind ViewModel.ProfilePicture, Mode=OneWay}" />
                 </Grid>
             </NavigationView.PaneFooter>
         </NavigationView>

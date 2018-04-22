@@ -21,24 +21,17 @@ namespace V2EX.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class HomePage : Page
+    public sealed partial class TopicPage : Page
     {
-        public HomeViewModel ViewModel => DataContext as HomeViewModel;
-        public HomePage()
+        public TopicViewModel ViewModel => DataContext as TopicViewModel;
+        public TopicPage()
         {
             this.InitializeComponent();
         }
-
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            await ViewModel.InitializeAsync();
+            ViewModel.Initialize(e.Parameter);
             base.OnNavigatedTo(e);
-        }
-
-        private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var handler = sender as GridView;
-            ViewModel.TopicSelectedCmd.Execute(handler?.SelectedItem);
         }
     }
 }

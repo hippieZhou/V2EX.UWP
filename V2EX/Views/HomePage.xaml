@@ -2,6 +2,7 @@
     x:Class="V2EX.Views.HomePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
@@ -16,10 +17,14 @@
             <PivotItem Header="{x:Bind Header}" Tag="{x:Bind Tag}">
                 <GridView
                     Margin="0,12"
+                    SelectionChanged="GridView_SelectionChanged"
                     HorizontalAlignment="Center"
+                    animations:Connected.ListItemElementName="ItemThumbnail"
+                    animations:Connected.ListItemKey="listItem"
+                    IsItemClickEnabled="True"
                     ItemsSource="{x:Bind Topics}"
                     ScrollViewer.IsHorizontalScrollChainingEnabled="False"
-                    SelectionMode="None">
+                    SelectionMode="Single">
                     <GridView.ItemContainerStyle>
                         <Style TargetType="GridViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -27,12 +32,15 @@
                             <Setter Property="Margin" Value="12" />
                             <Setter Property="Width" Value="420" />
                             <Setter Property="Height" Value="140" />
-                            <Setter Property="Background" Value="{ThemeResource SystemControlAcrylicWindowBrush}" />
+                            <Setter Property="Background" Value="{ThemeResource ButtonDisabledBackgroundThemeBrush}" />
                         </Style>
                     </GridView.ItemContainerStyle>
                     <GridView.ItemTemplate>
                         <DataTemplate x:DataType="m:Topic">
-                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <Grid
+                                x:Name="ItemThumbnail"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="*" />
@@ -48,7 +56,7 @@
                                             Width="24"
                                             Height="24"
                                             VerticalAlignment="Center"
-                                            ProfilePicture="{x:Bind Node.Avatar_mini, Mode=OneWay, Converter={StaticResource StringFormateValueConverter}, ConverterParameter='https:'}" />
+                                            ProfilePicture="{x:Bind Member.Avatar_mini, Mode=OneWay, Converter={StaticResource StringFormateValueConverter}, ConverterParameter='https:'}" />
                                         <TextBlock
                                             Margin="12,0"
                                             VerticalAlignment="Center"
@@ -85,7 +93,7 @@
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
                                         Foreground="LightGray"
-                                        Text="{x:Bind Last_modified, Mode=OneWay, Converter={StaticResource DateTimeValueConverter}}" />
+                                        Text="{x:Bind Last_modified, Mode=OneWay}" />
                                 </Grid>
                             </Grid>
                         </DataTemplate>
