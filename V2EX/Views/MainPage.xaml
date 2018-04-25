@@ -25,6 +25,9 @@
             IsSettingsVisible="True"
             MenuItemsSource="{x:Bind ViewModel.PrimaryMenus}"
             SelectedItem="{x:Bind ViewModel.SelectedMenu, Mode=OneWay}">
+            <NavigationView.AutoSuggestBox>
+                <AutoSuggestBox PlaceholderText="Search" QueryIcon="Find" />
+            </NavigationView.AutoSuggestBox>
             <i:Interaction.Behaviors>
                 <ic:EventTriggerBehavior EventName="SelectionChanged">
                     <ic:InvokeCommandAction Command="{x:Bind ViewModel.ItemSelectedCmd}" />

@@ -100,6 +100,7 @@
     <Compile Include="Commons\SingletonProvider.cs" />
     <Compile Include="Converters\DateTimeValueConverter.cs" />
     <Compile Include="Converters\StringFormateValueConverter.cs" />
+    <Compile Include="Converters\TabMenuValueConverter.cs" />
     <Compile Include="Models\Topics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\WebService.cs" />
@@ -152,6 +153,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\Pivot.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\RadioButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

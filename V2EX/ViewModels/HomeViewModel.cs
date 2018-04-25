@@ -5,6 +5,7 @@ using GalaSoft.MvvmLight.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,25 +31,12 @@ namespace V2EX.ViewModels
             set { Set(ref _selectedTab, value); }
         }
 
-        private RelayCommand<TabViewModel> _itemSelectedCmd;
-        public RelayCommand<TabViewModel> ItemSelectedCmd
+        private RelayCommand<object> _topicSelectedCmd;
+        public RelayCommand<object> TopicSelectedCmd
         {
             get
             {
-                return _itemSelectedCmd ?? (_itemSelectedCmd = new RelayCommand<TabViewModel>(
-                     (args) =>
-                    {
-                        args?.LoadTabTopicsAsync();
-                    }));
-            }
-        }
-
-        private RelayCommand<Topic> _topicSelectedCmd;
-        public RelayCommand<Topic> TopicSelectedCmd
-        {
-            get
-            {
-                return _topicSelectedCmd ?? (_topicSelectedCmd = new RelayCommand<Topic>(
+                return _topicSelectedCmd ?? (_topicSelectedCmd = new RelayCommand<object>(
                     (topic) =>
                     {
                         var navigationService = ServiceLocator.Current.GetInstance<NavigationService>();
@@ -66,13 +54,19 @@ namespace V2EX.ViewModels
         private async Task InitializeTabMenusAsync()
         {
             TabMenus.Clear();
-            var dic = await WebService.Instance.GetHomeTabsAsync();
-            foreach (var item in dic)
-            {
-                TabMenus.Add(new TabViewModel(item.Key, item.Value));
-            }
-            SelectedTab = TabMenus.FirstOrDefault();
-            ItemSelectedCmd.Execute(SelectedTab);
+            TabMenus.Add(new TabViewModel("最新", "latest", true));
+            TabMenus.Add(new TabViewModel("最热", "hot", false));
+
+            await UpdateTabItemAsync(TabMenus.FirstOrDefault());
+        }
+
+        public async Task UpdateTabItemAsync(TabViewModel tab)
+        {
+            if (tab == SelectedTab)
+                return;
+
+            SelectedTab = tab;
+            await SelectedTab.LoadTabTopicsAsync(true);
         }
     }
 
@@ -81,6 +75,13 @@ namespace V2EX.ViewModels
         public object Header { get; set; }
         public string Tag { get; set; }
 
+        private bool _isChecked;
+        public bool IsChecked
+        {
+            get { return _isChecked; }
+            set { Set(ref _isChecked, value); }
+        }
+
         private ObservableCollection<Topic> _topics = new ObservableCollection<Topic>();
         public ObservableCollection<Topic> Topics
         {
@@ -88,20 +89,49 @@ namespace V2EX.ViewModels
             set { Set(ref _topics, value); }
         }
 
-        public TabViewModel(string header,string tag)
+        public TabViewModel(string header, string tag, bool isChecked)
         {
             Header = header;
             Tag = tag;
+            IsChecked = isChecked;
         }
 
-        internal async Task LoadTabTopicsAsync()
+        private RelayCommand _tabItemSelectedCmd;
+        public RelayCommand TabItemSelectedCmd
+        {
+            get
+            {
+                return _tabItemSelectedCmd ?? (_tabItemSelectedCmd = new RelayCommand(
+                    async () =>
+                    {
+                        var home = ServiceLocator.Current.GetInstance<HomeViewModel>();
+                        await home?.UpdateTabItemAsync(this);
+                    }));
+            }
+        }
+
+        public async Task LoadTabTopicsAsync(bool isRefresh)
         {
             Topics.Clear();
 
-            var list = await WebService.Instance.GetTabTopicsAsync(Tag);
-            foreach (var item in list)
+            if (isRefresh)
             {
-                Topics.Add(item);
+                IEnumerable<Topic> list = new List<Topic>();
+                switch (Tag)
+                {
+                    case "latest":
+                        list = await WebService.Instance.GetLatestTopicsAsync(isRefresh);
+                        break;
+                    case "hot":
+                        list = await WebService.Instance.GetHotTopicsAsync(isRefresh);
+                        break;
+                    default:
+                        break;
+                }
+                foreach (var item in list)
+                {
+                    Topics.Add(item);
+                }
             }
         }
 

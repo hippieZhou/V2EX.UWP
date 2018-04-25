@@ -11,9 +11,13 @@
             <vm:ViewModelLocator x:Key="Locator" />
             <c:StringFormateValueConverter x:Key="StringFormateValueConverter" />
             <c:DateTimeValueConverter x:Key="DateTimeValueConverter" />
+            <c:TabMenuValueConverter x:Key="TabMenuValueConverter" />
+
+            <x:Double x:Key="Breakpoint640Plus">641</x:Double>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Styles/ScrollBar.xaml" />
-                <ResourceDictionary Source="/Styles/Pivot.xaml" />
+                <ResourceDictionary Source="/Styles/RadioButton.xaml" />
+                <!--<ResourceDictionary Source="/Styles/Pivot.xaml" />-->
                 <!--<ResourceDictionary Source="/Styles/Button.xaml" />-->
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

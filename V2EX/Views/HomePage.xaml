@@ -13,106 +13,127 @@
     DataContext="{Binding Home, Source={StaticResource Locator}}"
     mc:Ignorable="d">
     <Page.Resources>
-        <DataTemplate x:Key="TabDataTemplate" x:DataType="vm:TabViewModel">
-            <PivotItem Header="{x:Bind Header}" Tag="{x:Bind Tag}">
-                <GridView
-                    Margin="0,12"
-                    SelectionChanged="GridView_SelectionChanged"
-                    HorizontalAlignment="Center"
-                    animations:Connected.ListItemElementName="ItemThumbnail"
-                    animations:Connected.ListItemKey="listItem"
-                    IsItemClickEnabled="True"
-                    ItemsSource="{x:Bind Topics}"
-                    ScrollViewer.IsHorizontalScrollChainingEnabled="False"
-                    SelectionMode="Single">
-                    <GridView.ItemContainerStyle>
-                        <Style TargetType="GridViewItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                            <Setter Property="VerticalContentAlignment" Value="Stretch" />
-                            <Setter Property="Margin" Value="12" />
-                            <Setter Property="Width" Value="420" />
-                            <Setter Property="Height" Value="140" />
-                            <Setter Property="Background" Value="{ThemeResource ButtonDisabledBackgroundThemeBrush}" />
-                        </Style>
-                    </GridView.ItemContainerStyle>
-                    <GridView.ItemTemplate>
-                        <DataTemplate x:DataType="m:Topic">
-                            <Grid
-                                x:Name="ItemThumbnail"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <Grid Grid.Row="0" Margin="12,12,12,6">
-                                    <StackPanel
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Center"
-                                        Orientation="Horizontal">
-                                        <PersonPicture
-                                            Grid.Row="0"
-                                            Width="24"
-                                            Height="24"
-                                            VerticalAlignment="Center"
-                                            ProfilePicture="{x:Bind Member.Avatar_mini, Mode=OneWay, Converter={StaticResource StringFormateValueConverter}, ConverterParameter='https:'}" />
-                                        <TextBlock
-                                            Margin="12,0"
-                                            VerticalAlignment="Center"
-                                            Foreground="LightGray"
-                                            Text="{x:Bind Member.Username, Mode=OneWay}" />
-                                    </StackPanel>
+        <Style x:Key="GridViewItemStyle" TargetType="GridViewItem">
+            <Setter Property="Margin" Value="0,0,20,20" />
+        </Style>
 
-                                    <StackPanel
-                                        Grid.Row="0"
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Orientation="Horizontal">
-                                        <FontIcon
-                                            VerticalAlignment="Center"
-                                            FontFamily="Segoe MDL2 Assets"
-                                            Foreground="LightGray"
-                                            Glyph="&#xE15F;" />
-                                        <TextBlock
-                                            Margin="4,0,0,0"
-                                            VerticalAlignment="Center"
-                                            Foreground="LightGray"
-                                            Text="{x:Bind Replies, Mode=OneWay}" />
-                                    </StackPanel>
-                                </Grid>
-                                <Grid Grid.Row="1">
-                                    <TextBlock
-                                        Margin="12,6"
-                                        Text="{x:Bind Title, Mode=OneWay, Converter={StaticResource StringFormateValueConverter}, ConverterParameter='...'}"
-                                        TextWrapping="WrapWholeWords" />
-                                </Grid>
-                                <Grid Grid.Row="2">
-                                    <TextBlock
-                                        Margin="12,6"
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Foreground="LightGray"
-                                        Text="{x:Bind Last_modified, Mode=OneWay}" />
-                                </Grid>
-                            </Grid>
-                        </DataTemplate>
-                    </GridView.ItemTemplate>
-                </GridView>
-            </PivotItem>
-        </DataTemplate>
+        <Style x:Key="GridViewItemStyleSmall" TargetType="GridViewItem">
+            <Setter Property="Margin" Value="0,0,0,14" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        </Style>
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Pivot
-            x:Name="TabPivot"
-            ItemTemplate="{StaticResource TabDataTemplate}"
-            ItemsSource="{x:Bind ViewModel.TabMenus}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <ItemsControl ItemsSource="{x:Bind ViewModel.TabMenus}">
+                <ItemsControl.Template>
+                    <ControlTemplate>
+                        <Grid>
+                            <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                <ItemsPresenter />
+                            </ScrollViewer>
+                            <Border
+                                Height="1"
+                                VerticalAlignment="Bottom"
+                                Background="LightGray" />
+                        </Grid>
+                    </ControlTemplate>
+                </ItemsControl.Template>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsStackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:TabViewModel">
+                        <RadioButton
+                            Command="{x:Bind TabItemSelectedCmd}"
+                            Content="{x:Bind Header, Mode=OneWay}"
+                            GroupName="TabMenus"
+                            IsChecked="{x:Bind IsChecked}"
+                            Style="{StaticResource TabRadioButtonStyle}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+        </Grid>
+        <GridView
+            x:Name="TabGV"
+            Grid.Row="1"
+            Margin="0,24,-24,0"
+            IsItemClickEnabled="True"
+            IsSwipeEnabled="False"
+            ItemContainerStyle="{StaticResource GridViewItemStyle}"
+            ItemsSource="{x:Bind ViewModel.SelectedTab.Topics, Mode=OneWay}"
+            SelectionMode="Single"
+            SizeChanged="TabGV_SizeChanged">
             <i:Interaction.Behaviors>
                 <ic:EventTriggerBehavior EventName="SelectionChanged">
-                    <ic:InvokeCommandAction Command="{x:Bind ViewModel.ItemSelectedCmd}" CommandParameter="{Binding ElementName=TabPivot, Path=SelectedItem}" />
+                    <ic:InvokeCommandAction Command="{x:Bind ViewModel.TopicSelectedCmd}" CommandParameter="{Binding ElementName=TabGV, Path=SelectedItem}" />
                 </ic:EventTriggerBehavior>
             </i:Interaction.Behaviors>
-        </Pivot>
+            <GridView.ItemTemplate>
+                <DataTemplate x:DataType="m:Topic">
+                    <Grid
+                        x:Name="controlRoot"
+                        Width="346"
+                        Height="140"
+                        Padding="12"
+                        Background="{ThemeResource SystemControlAcrylicElementBrush}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <PersonPicture
+                            x:Name="gridImage"
+                            Width="36"
+                            VerticalAlignment="Top"
+                            AutomationProperties.Name="{x:Bind Member.Username}"
+                            ProfilePicture="{x:Bind Member.Avatar_mini, Converter={StaticResource StringFormateValueConverter}, ConverterParameter='https:'}" />
+                        <RelativePanel Grid.Column="1" Margin="16,6,0,0">
+                            <TextBlock
+                                x:Name="titleText"
+                                Foreground="{ThemeResource SystemControlForegroundAccentBrush}"
+                                Style="{StaticResource SubtitleTextBlockStyle}"
+                                Text="{x:Bind Title.Trim()}"
+                                TextLineBounds="TrimToCapHeight"
+                                TextWrapping="NoWrap" />
+                            <TextBlock
+                                Margin="0,4,0,0"
+                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                RelativePanel.Below="titleText"
+                                Style="{StaticResource BodyTextBlockStyle}"
+                                Text="{x:Bind Content_rendered, Converter={StaticResource StringFormateValueConverter}, ConverterParameter='html'}"
+                                TextTrimming="CharacterEllipsis" />
+                        </RelativePanel>
+                    </Grid>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="LayoutVisualStates">
+                <VisualState x:Name="WideLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters />
+                </VisualState>
+                <VisualState x:Name="NarrowLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="controlRoot.Width" Value="Auto" />
+                        <Setter Target="controlRoot.Height" Value="120" />
+                        <Setter Target="itemGridView.ItemContainerStyle" Value="{StaticResource GridViewItemStyleSmall}" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </Page>

@@ -35,10 +35,21 @@ namespace V2EX.Views
             base.OnNavigatedTo(e);
         }
 
-        private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void TabGV_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            var handler = sender as GridView;
-            ViewModel.TopicSelectedCmd.Execute(handler?.SelectedItem);
+            var gridView = (GridView)sender;
+
+            if (gridView.ItemsPanelRoot is ItemsWrapGrid wrapGrid)
+            {
+                if (LayoutVisualStates.CurrentState == NarrowLayout)
+                {
+                    wrapGrid.ItemWidth = gridView.ActualWidth - gridView.Padding.Left - gridView.Padding.Right;
+                }
+                else
+                {
+                    wrapGrid.ItemWidth = double.NaN;
+                }
+            }
         }
     }
 }

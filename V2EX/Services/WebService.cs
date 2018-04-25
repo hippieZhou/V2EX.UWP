@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -113,6 +114,24 @@ namespace V2EX.Services
             return topics;
         }
 
+        public async Task<IEnumerable<Topic>> GetLatestTopicsAsync(bool refresh = true)
+        {
+            List<Topic> topics = new List<Topic>();
+            if (refresh)
+            {
+                await GetTopicsAsync(HTTPS_API_URL + API_LATEST, (list, ex) =>
+                {
+                    if (ex == null)
+                        topics.AddRange(list);
+                });
+            }
+            else
+            {
+
+            }
+            return topics;
+        }
+
         public async Task<Dictionary<string, string>> GetHomeTabsAsync()
         {
             Dictionary<string, string> tabDic = new Dictionary<string, string>();
@@ -122,10 +141,10 @@ namespace V2EX.Services
                 {
                     HtmlDocument doc = new HtmlDocument();
                     doc.LoadHtml(html);
-                    var tabNode = doc.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[2]/div[1]/div[3]/div[2]/div[1]");
-                    if (tabNode != null)
+                    var nodes = doc.DocumentNode.SelectNodes("//a[starts-with(@class,'tab')]");
+                    if (nodes != null)
                     {
-                        foreach (var node in tabNode.ChildNodes)
+                        foreach (var node in nodes)
                         {
                             string text = node.InnerText;
                             string href = node.GetAttributeValue("href", "");
@@ -149,21 +168,35 @@ namespace V2EX.Services
                 {
                     HtmlDocument doc = new HtmlDocument();
                     doc.LoadHtml(html);
-                    var rootNode = doc.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[2]/div[1]/div[3]/div[2]");
-
-                    for (int i = 0; i < rootNode.ChildNodes.Count; i++)
+                    var nodes = doc.DocumentNode.SelectNodes("//div[@class='cell item']");
+                    if (nodes != null)
                     {
-                        if (rootNode.ChildNodes[i].Name == "div" && rootNode.ChildNodes[i].GetAttributeValue("class", "") == "cell item")
+                        foreach (var item in nodes)
                         {
-                            var node = rootNode.ChildNodes[i].SelectSingleNode($"/html[1]/body[1]/div[2]/div[1]/div[3]/div[2]/div[3]/table[1]/tr[{i + 1}]");
-                            var result = node.InnerText.Trim().Split(new[] { '\n' }).Where(p => !string.IsNullOrWhiteSpace(p)).ToArray();
-                            if (result.Count() >= 3)
+                            var n = item.Descendants(4);
+                            var img = item.SelectSingleNode("//img[@class='avatar']");
+                            var node = item.SelectSingleNode("//a[@class='node']");
+                            var member = item.SelectSingleNode("//strong");
+                            var title = item.SelectSingleNode("//span[@class='item_title']");
+                            var fade = item.SelectSingleNode("//span[@class='small fade']");
+                            try
                             {
-                                var topic = new Topic();
-                                topic.Title = result[0].Trim();
-                                topic.Replies = Convert.ToInt32(result[2].Trim());
+                                var topic = new Topic { Title = title.InnerText };
+
+                                var href = img.GetAttributeValue("src", "");
+                                topic.Member = new Member
+                                {
+                                    Avatar_large = href,
+                                    Avatar_mini = href,
+                                    Avatar_normal = href,
+                                    Username = member.InnerText
+                                };
 
                                 list.Add(topic);
+                            }
+                            catch (Exception)
+                            {
+                                continue;
                             }
                         }
                     }
