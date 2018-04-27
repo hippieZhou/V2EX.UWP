@@ -34,8 +34,15 @@ namespace V2EX.Views
             await ViewModel.InitializeAsync();
             base.OnNavigatedTo(e);
         }
+        private void OnItemGridViewContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            if (sender.ContainerFromItem(sender.Items.LastOrDefault()) is GridViewItem container)
+            {
+                container.XYFocusDown = container;
+            }
+        }
 
-        private void TabGV_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void OnItemGridViewSizeChanged(object sender, SizeChangedEventArgs e)
         {
             var gridView = (GridView)sender;
 

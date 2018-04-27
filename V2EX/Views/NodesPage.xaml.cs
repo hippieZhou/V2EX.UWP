@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using V2EX.ViewModels;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -22,9 +23,21 @@ namespace V2EX.Views
     /// </summary>
     public sealed partial class NodesPage : Page
     {
+        public NodesViewModel ViewModel => DataContext as NodesViewModel;
         public NodesPage()
         {
             this.InitializeComponent();
+        }
+
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            await ViewModel.InitializeAsync();
+            base.OnNavigatedTo(e);
+        }
+
+        private void List_GotFocus(object sender, RoutedEventArgs e)
+        {
+            szControl.StartBringIntoView();
         }
     }
 }

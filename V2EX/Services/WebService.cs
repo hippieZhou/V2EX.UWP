@@ -132,78 +132,22 @@ namespace V2EX.Services
             return topics;
         }
 
-        public async Task<Dictionary<string, string>> GetHomeTabsAsync()
+        public async Task<IEnumerable<Node>> GetAllNodesAsync()
         {
-            Dictionary<string, string> tabDic = new Dictionary<string, string>();
-            await GetJsonAsync(HTTPS_BASE_URL, (html, ex) => 
+            List<Node> nodes = new List<Node>();
+            string uri = HTTPS_API_URL + API_ALL_NODE;
+            await GetJsonAsync(uri, (json, ex) =>
             {
-                if (!string.IsNullOrWhiteSpace(html) && ex == null)
+                if (!string.IsNullOrWhiteSpace(json) && ex == null)
                 {
-                    HtmlDocument doc = new HtmlDocument();
-                    doc.LoadHtml(html);
-                    var nodes = doc.DocumentNode.SelectNodes("//a[starts-with(@class,'tab')]");
-                    if (nodes != null)
+                    DeserializeObject<IEnumerable<Node>>(json, (list, innerEx) =>
                     {
-                        foreach (var node in nodes)
-                        {
-                            string text = node.InnerText;
-                            string href = node.GetAttributeValue("href", "");
-                            if (!string.IsNullOrWhiteSpace(text))
-                                tabDic.Add(text, href);
-                        }
-                    }
+                        if (list != null && innerEx == null)
+                            nodes.AddRange(list);
+                    });
                 }
             });
-            return tabDic;
-        }
-
-        public async Task<IEnumerable<Topic>> GetTabTopicsAsync(string url)
-        {
-            List<Topic> list = new List<Topic>();
-
-            string nav = HTTPS_BASE_URL + url;
-            await GetJsonAsync(nav, (html, ex) => 
-            {
-                if (!string.IsNullOrWhiteSpace(html) && ex == null)
-                {
-                    HtmlDocument doc = new HtmlDocument();
-                    doc.LoadHtml(html);
-                    var nodes = doc.DocumentNode.SelectNodes("//div[@class='cell item']");
-                    if (nodes != null)
-                    {
-                        foreach (var item in nodes)
-                        {
-                            var n = item.Descendants(4);
-                            var img = item.SelectSingleNode("//img[@class='avatar']");
-                            var node = item.SelectSingleNode("//a[@class='node']");
-                            var member = item.SelectSingleNode("//strong");
-                            var title = item.SelectSingleNode("//span[@class='item_title']");
-                            var fade = item.SelectSingleNode("//span[@class='small fade']");
-                            try
-                            {
-                                var topic = new Topic { Title = title.InnerText };
-
-                                var href = img.GetAttributeValue("src", "");
-                                topic.Member = new Member
-                                {
-                                    Avatar_large = href,
-                                    Avatar_mini = href,
-                                    Avatar_normal = href,
-                                    Username = member.InnerText
-                                };
-
-                                list.Add(topic);
-                            }
-                            catch (Exception)
-                            {
-                                continue;
-                            }
-                        }
-                    }
-                }
-            });
-
-            return list;
+            return nodes;
         }
     }
 }
