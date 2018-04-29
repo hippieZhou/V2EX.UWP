@@ -98,6 +98,7 @@
     <Compile Include="Commons\ProcessTime.cs" />
     <Compile Include="Commons\ResourceExtensions.cs" />
     <Compile Include="Commons\SingletonProvider.cs" />
+    <Compile Include="Commons\StringExtensions.cs" />
     <Compile Include="Converters\DateTimeValueConverter.cs" />
     <Compile Include="Converters\StringFormateValueConverter.cs" />
     <Compile Include="Converters\TabMenuValueConverter.cs" />
@@ -193,7 +194,7 @@
       <Version>1.8.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.0.8</Version>
+      <Version>6.1.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Xaml.Behaviors.Uwp.Managed">
       <Version>2.0.0</Version>

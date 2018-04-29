@@ -9,17 +9,17 @@ namespace V2EX.Models
 {
     public class ControlInfoDataGroup
     {
-        public string Title { get; private set; }
+        public Char Character { get; private set; }
         public ObservableCollection<Node> Items { get; private set; }
-        public ControlInfoDataGroup(string title, IEnumerable<Node> nodes)
+        public ControlInfoDataGroup(char character, IEnumerable<Node> nodes)
         {
-            this.Title = title;
+            this.Character = character;
             this.Items = new ObservableCollection<Node>(nodes);
         }
 
         public override string ToString()
         {
-            return this.Title;
+            return this.Character.ToString();
         }
     }
 }

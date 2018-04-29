@@ -15,25 +15,23 @@
             IsSourceGrouped="True"
             ItemsPath="Items"
             Source="{x:Bind ViewModel.Groups}" />
-        <DataTemplate x:Key="SmallZoomedInTemplate" x:DataType="m:Node">
-            <TextBlock Style="{StaticResource BaseTextBlockStyle}" Text="{x:Bind Title}" />
-        </DataTemplate>
-        <DataTemplate x:Key="WideZoomedInTemplate" x:DataType="m:Node">
+
+        <DataTemplate x:Key="ZoomedInTemplate" x:DataType="m:Node">
             <TextBlock Style="{StaticResource BaseTextBlockStyle}" Text="{x:Bind Title}" />
         </DataTemplate>
 
         <DataTemplate x:Key="ZoomedInGroupHeaderTemplate" x:DataType="m:ControlInfoDataGroup">
             <TextBlock
-                Foreground="{ThemeResource ApplicationForegroundThemeBrush}"
-                Style="{StaticResource SubtitleTextBlockStyle}"
-                Text="{x:Bind}" />
+                Foreground="{ThemeResource SystemControlForegroundAccentBrush}"
+                Style="{StaticResource TitleTextBlockStyle}"
+                Text="{x:Bind Character}" />
         </DataTemplate>
 
         <DataTemplate x:Key="ZoomedOutTemplate" x:DataType="wuxdata:ICollectionViewGroup">
             <TextBlock
-                Style="{StaticResource CaptionTextBlockStyle}"
-                Text="{Binding Group.(m:ControlInfoDataGroup.Title)}"
-                TextWrapping="Wrap" />
+                FontSize="36"
+                Style="{StaticResource TitleTextBlockStyle}"
+                Text="{Binding Group.(m:ControlInfoDataGroup.Character)}" />
         </DataTemplate>
     </Page.Resources>
 
@@ -43,12 +41,13 @@
                 <GridView
                     x:Name="GV"
                     GotFocus="List_GotFocus"
+                    ItemTemplate="{StaticResource ZoomedInTemplate}"
                     ItemsSource="{x:Bind cvsGroups.View}"
                     ScrollViewer.IsHorizontalScrollChainingEnabled="False"
                     SelectionMode="None">
                     <GridView.ItemContainerStyle>
                         <Style TargetType="GridViewItem">
-                            <Setter Property="Margin" Value="12,0" />
+                            <Setter Property="Margin" Value="12" />
                             <Setter Property="Background" Value="{ThemeResource SystemControlAcrylicElementBrush}" />
                         </Style>
                     </GridView.ItemContainerStyle>
@@ -59,7 +58,7 @@
             </SemanticZoom.ZoomedInView>
 
             <SemanticZoom.ZoomedOutView>
-                <ListView
+                <GridView
                     GotFocus="List_GotFocus"
                     ItemsSource="{x:Bind cvsGroups.View.CollectionGroups}"
                     SelectionMode="None" />

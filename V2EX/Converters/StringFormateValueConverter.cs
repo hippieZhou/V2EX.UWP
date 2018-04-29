@@ -34,7 +34,7 @@ namespace V2EX.Converters
 
                 return value;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return value;
             }

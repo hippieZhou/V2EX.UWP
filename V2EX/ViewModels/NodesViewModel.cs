@@ -15,17 +15,16 @@ namespace V2EX.ViewModels
         private ObservableCollection<ControlInfoDataGroup> _groups = new ObservableCollection<ControlInfoDataGroup>();
         public ObservableCollection<ControlInfoDataGroup> Groups
         {
-            get { return _groups = new ObservableCollection<ControlInfoDataGroup>(); }
+            get { return _groups; }
             set { Set(ref _groups, value); }
         }
-
-
 
         public async Task InitializeAsync()
         {
             Groups.Clear();
+
             IEnumerable<Node> list = await WebService.Instance.GetAllNodesAsync();
-            var groups = list.GroupBy(p => p.Title);
+            var groups = list.GroupBy(p => p.Name.ToUpper().ToCharArray().FirstOrDefault()).OrderBy(p => p.Key);
             foreach (var group in groups)
             {
                 Groups.Add(new ControlInfoDataGroup(group.Key, group));
