@@ -46,17 +46,17 @@ namespace V2EX.Views
         {
             var gridView = (GridView)sender;
 
-            if (gridView.ItemsPanelRoot is ItemsWrapGrid wrapGrid)
-            {
-                if (LayoutVisualStates.CurrentState == NarrowLayout)
-                {
-                    wrapGrid.ItemWidth = gridView.ActualWidth - gridView.Padding.Left - gridView.Padding.Right;
-                }
-                else
-                {
-                    wrapGrid.ItemWidth = double.NaN;
-                }
-            }
+            //if (gridView.ItemsPanelRoot is ItemsWrapGrid wrapGrid)
+            //{
+            //    if (LayoutVisualStates.CurrentState == NarrowLayout)
+            //    {
+            //        wrapGrid.ItemWidth = gridView.ActualWidth - gridView.Padding.Left - gridView.Padding.Right;
+            //    }
+            //    else
+            //    {
+            //        wrapGrid.ItemWidth = double.NaN;
+            //    }
+            //}
         }
     }
 }

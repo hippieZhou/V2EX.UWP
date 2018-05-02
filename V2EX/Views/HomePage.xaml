@@ -13,151 +13,131 @@
     mc:Ignorable="d">
     <Page.Resources>
         <Style x:Key="GridViewItemStyle" TargetType="GridViewItem">
-            <Setter Property="Margin" Value="0,0,20,20" />
+            <Setter Property="Margin" Value="12" />
         </Style>
 
         <Style x:Key="GridViewItemStyleSmall" TargetType="GridViewItem">
             <Setter Property="Margin" Value="0,0,0,14" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         </Style>
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-
-        <Grid Grid.Row="0">
-            <ItemsControl ItemsSource="{x:Bind ViewModel.TabMenus}">
-                <ItemsControl.Template>
-                    <ControlTemplate>
-                        <Grid>
-                            <ItemsPresenter />
-                            <Border
-                                Height="1"
-                                VerticalAlignment="Bottom"
-                                Background="LightGray" />
-                        </Grid>
-                    </ControlTemplate>
-                </ItemsControl.Template>
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <ItemsStackPanel Orientation="Horizontal" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate x:DataType="vm:TabViewModel">
-                        <RadioButton
-                            Command="{x:Bind TabItemSelectedCmd}"
-                            Content="{x:Bind Header, Mode=OneWay}"
-                            GroupName="TabMenus"
-                            IsChecked="{x:Bind IsChecked}"
-                            Style="{StaticResource TabRadioButtonStyle}" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </Grid>
-        <GridView
-            x:Name="itemGridView"
-            Grid.Row="1"
-            Margin="0,24,-24,0"
-            ContainerContentChanging="OnItemGridViewContainerContentChanging"
-            IsItemClickEnabled="True"
-            IsSwipeEnabled="False"
-            ItemsSource="{x:Bind ViewModel.SelectedTab.Topics, Mode=OneWay}"
-            SelectionMode="Single"
-            SizeChanged="OnItemGridViewSizeChanged">
+        <Pivot x:Name="TabPivot" ItemsSource="{x:Bind ViewModel.TabMenus}">
             <i:Interaction.Behaviors>
                 <ic:EventTriggerBehavior EventName="SelectionChanged">
-                    <ic:InvokeCommandAction Command="{x:Bind ViewModel.TopicSelectedCmd}" CommandParameter="{Binding ElementName=itemGridView, Path=SelectedItem}" />
+                    <ic:InvokeCommandAction Command="{x:Bind ViewModel.TabSelectedCmd}" CommandParameter="{Binding ElementName=TabPivot, Path=SelectedItem}" />
                 </ic:EventTriggerBehavior>
             </i:Interaction.Behaviors>
-            <GridView.ItemTemplate>
-                <DataTemplate x:DataType="m:Topic">
-                    <UserControl>
-                        <Grid
-                            x:Name="controlRoot"
-                            Width="346"
-                            Height="140"
-                            Padding="12"
-                            Background="{ThemeResource SystemControlAcrylicElementBrush}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <PersonPicture
-                                x:Name="gridImage"
-                                Width="36"
-                                VerticalAlignment="Top"
-                                AutomationProperties.Name="{x:Bind Member.Username}"
-                                ProfilePicture="{x:Bind Member.Avatar_mini, Converter={StaticResource StringFormateValueConverter}, ConverterParameter='https:'}" />
-                            <RelativePanel Grid.Column="1" Margin="16,6,0,0">
-                                <TextBlock
-                                    x:Name="userNameText"
-                                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                    TextLineBounds="TrimToCapHeight"
-                                    TextWrapping="NoWrap">
-                                    <Run Text="{x:Bind Member.Username}" />
-                                    <Run FontWeight="Black" Text="·" />
-                                    <Run Text="{x:Bind Node.Title}" />
-                                    <Run FontWeight="Black" Text="·" />
-                                    <Run Text="{x:Bind Replies}" />
-                                </TextBlock>
-                                <TextBlock
-                                    Margin="0,4,0,0"
-                                    Foreground="{ThemeResource SystemControlForegroundAccentBrush}"
-                                    RelativePanel.Below="userNameText"
-                                    Style="{StaticResource SubtitleTextBlockStyle}"
-                                    Text="{x:Bind Title.Trim()}"
-                                    TextTrimming="CharacterEllipsis" />
-                            </RelativePanel>
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup x:Name="LayoutVisualStates">
-                                    <VisualState x:Name="WideLayout">
-                                        <VisualState.StateTriggers>
-                                            <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
-                                        </VisualState.StateTriggers>
-                                        <VisualState.Setters />
-                                    </VisualState>
-                                    <VisualState x:Name="NarrowLayout">
-                                        <VisualState.StateTriggers>
-                                            <AdaptiveTrigger MinWindowWidth="0" />
-                                        </VisualState.StateTriggers>
-                                        <VisualState.Setters>
-                                            <Setter Target="controlRoot.Width" Value="Auto" />
-                                            <Setter Target="controlRoot.Height" Value="120" />
-                                            <Setter Target="itemGridView.ItemContainerStyle" Value="{StaticResource GridViewItemStyleSmall}" />
-                                        </VisualState.Setters>
-                                    </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
-                        </Grid>
-                    </UserControl>
-                </DataTemplate>
-            </GridView.ItemTemplate>
-        </GridView>
+            <Pivot.ItemTemplate>
+                <DataTemplate x:DataType="vm:TabViewModel">
+                    <PivotItem Header="{x:Bind Header}">
+                        <GridView
+                            x:Name="itemGridView"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            ContainerContentChanging="OnItemGridViewContainerContentChanging"
+                            IsItemClickEnabled="True"
+                            IsSwipeEnabled="False"
+                            ItemsSource="{x:Bind Topics, Mode=OneWay}"
+                            SelectionMode="Single"
+                            SizeChanged="OnItemGridViewSizeChanged">
+                            <i:Interaction.Behaviors>
+                                <ic:EventTriggerBehavior EventName="SelectionChanged">
+                                    <ic:InvokeCommandAction Command="{x:Bind TopicSelectedCmd}" CommandParameter="{Binding ElementName=itemGridView, Path=SelectedItem}" />
+                                </ic:EventTriggerBehavior>
+                            </i:Interaction.Behaviors>
+                            <GridView.ItemTemplate>
+                                <DataTemplate x:DataType="m:Topic">
+                                    <UserControl>
+                                        <Grid
+                                            x:Name="controlRoot"
+                                            Width="346"
+                                            Height="140"
+                                            Padding="12"
+                                            Background="{ThemeResource SystemControlAcrylicElementBrush}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <PersonPicture
+                                                x:Name="gridImage"
+                                                Width="36"
+                                                VerticalAlignment="Top"
+                                                AutomationProperties.Name="{x:Bind Member.Username}"
+                                                ProfilePicture="{x:Bind Member.Avatar_mini, Converter={StaticResource StringFormateValueConverter}, ConverterParameter='https:'}" />
+                                            <RelativePanel Grid.Column="1" Margin="16,6,0,0">
+                                                <TextBlock
+                                                    x:Name="userNameText"
+                                                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                                    TextLineBounds="TrimToCapHeight"
+                                                    TextWrapping="NoWrap">
+                                                    <Run Text="{x:Bind Member.Username}" />
+                                                    <Run FontWeight="Black" Text="·" />
+                                                    <Run Text="{x:Bind Node.Title}" />
+                                                    <Run FontWeight="Black" Text="·" />
+                                                    <Run Text="{x:Bind Replies}" />
+                                                </TextBlock>
+                                                <TextBlock
+                                                    Margin="0,4,0,0"
+                                                    Foreground="{ThemeResource SystemControlForegroundAccentBrush}"
+                                                    RelativePanel.Below="userNameText"
+                                                    Style="{StaticResource SubtitleTextBlockStyle}"
+                                                    Text="{x:Bind Title.Trim()}"
+                                                    TextTrimming="CharacterEllipsis" />
+                                            </RelativePanel>
+                                            <VisualStateManager.VisualStateGroups>
+                                                <VisualStateGroup x:Name="LayoutVisualStates">
+                                                    <VisualState x:Name="WideLayout">
+                                                        <VisualState.StateTriggers>
+                                                            <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
+                                                        </VisualState.StateTriggers>
+                                                        <VisualState.Setters />
+                                                    </VisualState>
+                                                    <VisualState x:Name="NarrowLayout">
+                                                        <VisualState.StateTriggers>
+                                                            <AdaptiveTrigger MinWindowWidth="0" />
+                                                        </VisualState.StateTriggers>
+                                                        <VisualState.Setters>
+                                                            <Setter Target="controlRoot.Width" Value="*" />
+                                                            <Setter Target="controlRoot.Height" Value="120" />
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+                                                </VisualStateGroup>
+                                            </VisualStateManager.VisualStateGroups>
+                                        </Grid>
+                                    </UserControl>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                        </GridView>
 
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="LayoutVisualStates">
-                <VisualState x:Name="WideLayout">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="itemGridView.ItemContainerStyle" Value="{StaticResource GridViewItemStyle}" />
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState x:Name="NarrowLayout">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="0" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="itemGridView.Padding" Value="0,0,20,0" />
-                        <Setter Target="itemGridView.ItemContainerStyle" Value="{StaticResource GridViewItemStyleSmall}" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="LayoutVisualStates"  >
+                                <VisualState x:Name="WideLayout">
+                                    <VisualState.StateTriggers>
+                                        <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
+                                    </VisualState.StateTriggers>
+                                    <VisualState.Setters>
+                                        <Setter Target="itemGridView.ItemContainerStyle" Value="{StaticResource GridViewItemStyle}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="NarrowLayout">
+                                    <VisualState.StateTriggers>
+                                        <AdaptiveTrigger MinWindowWidth="0" />
+                                    </VisualState.StateTriggers>
+                                    <VisualState.Setters>
+                                        <Setter Target="itemGridView.Padding" Value="0,0,20,0" />
+                                        <Setter Target="itemGridView.ItemContainerStyle" Value="{StaticResource GridViewItemStyleSmall}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </PivotItem>
+                </DataTemplate>
+            </Pivot.ItemTemplate>
+        </Pivot>
     </Grid>
 </Page>

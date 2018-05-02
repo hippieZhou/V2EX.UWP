@@ -31,18 +31,21 @@ namespace V2EX.ViewModels
             set { Set(ref _selectedTab, value); }
         }
 
-        private RelayCommand<object> _topicSelectedCmd;
-        public RelayCommand<object> TopicSelectedCmd
+        private RelayCommand<TabViewModel> _tabSelectedCmd;
+        public RelayCommand<TabViewModel> TabSelectedCmd
         {
             get
             {
-                return _topicSelectedCmd ?? (_topicSelectedCmd = new RelayCommand<object>(
-                    (topic) =>
+                return _tabSelectedCmd
+                    ?? (_tabSelectedCmd = new RelayCommand<TabViewModel>(
+                    async (tab) =>
                     {
-                        var navigationService = ServiceLocator.Current.GetInstance<NavigationService>();
-                        navigationService.NavigateTo(typeof(TopicViewModel).FullName, topic);
-                    },
-                    (topic) => topic != null));
+                        if (tab == null || SelectedTab == tab)
+                            return;
+
+                        SelectedTab = tab;
+                        await SelectedTab.LoadTabTopicsAsync();
+                    }));
             }
         }
 
@@ -58,22 +61,12 @@ namespace V2EX.ViewModels
             Dictionary<string, string> tabs = await WebService.Instance.GetTabList();
             foreach (var tab in tabs)
             {
-                TabMenus.Add(new TabViewModel(tab.Value, tab.Key, false));
+                TabMenus.Add(new TabViewModel(tab.Value, tab.Key));
             }
             if (TabMenus.Count < 1)
                 return;
 
-            TabMenus[0].IsChecked = true;
-            await UpdateTabItemAsync(TabMenus.First());
-        }
-
-        public async Task UpdateTabItemAsync(TabViewModel tab)
-        {
-            if (tab == SelectedTab)
-                return;
-
-            SelectedTab = tab;
-            await SelectedTab.LoadTabTopicsAsync(true);
+            TabSelectedCmd.Execute(TabMenus.First());
         }
     }
 
@@ -82,13 +75,6 @@ namespace V2EX.ViewModels
         public object Header { get; set; }
         public string Tag { get; set; }
 
-        private bool _isChecked;
-        public bool IsChecked
-        {
-            get { return _isChecked; }
-            set { Set(ref _isChecked, value); }
-        }
-
         private ObservableCollection<Topic> _topics = new ObservableCollection<Topic>();
         public ObservableCollection<Topic> Topics
         {
@@ -96,24 +82,39 @@ namespace V2EX.ViewModels
             set { Set(ref _topics, value); }
         }
 
-        public TabViewModel(string header, string tag, bool isChecked)
+        public TabViewModel(string header, string tag)
         {
             Header = header;
             Tag = tag;
-            IsChecked = isChecked;
         }
 
-        private RelayCommand _tabItemSelectedCmd;
-        public RelayCommand TabItemSelectedCmd
+        //private RelayCommand _tabItemSelectedCmd;
+        //public RelayCommand TabItemSelectedCmd
+        //{
+        //    get
+        //    {
+        //        return _tabItemSelectedCmd ?? (_tabItemSelectedCmd = new RelayCommand(
+        //            async () =>
+        //            {
+        //                var home = ServiceLocator.Current.GetInstance<HomeViewModel>();
+        //                await home?.UpdateTabItemAsync(this);
+        //            }));
+        //    }
+        //}
+
+
+        private RelayCommand<object> _topicSelectedCmd;
+        public RelayCommand<object> TopicSelectedCmd
         {
             get
             {
-                return _tabItemSelectedCmd ?? (_tabItemSelectedCmd = new RelayCommand(
-                    async () =>
+                return _topicSelectedCmd ?? (_topicSelectedCmd = new RelayCommand<object>(
+                    (topic) =>
                     {
-                        var home = ServiceLocator.Current.GetInstance<HomeViewModel>();
-                        await home?.UpdateTabItemAsync(this);
-                    }));
+                        var navigationService = ServiceLocator.Current.GetInstance<NavigationService>();
+                        navigationService.NavigateTo(typeof(TopicViewModel).FullName, topic);
+                    },
+                    (topic) => topic != null));
             }
         }
 

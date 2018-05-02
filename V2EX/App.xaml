@@ -17,7 +17,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Styles/ScrollBar.xaml" />
                 <ResourceDictionary Source="/Styles/RadioButton.xaml" />
-                <!--<ResourceDictionary Source="/Styles/Pivot.xaml" />-->
+                <ResourceDictionary Source="/Styles/Pivot.xaml" />
                 <!--<ResourceDictionary Source="/Styles/Button.xaml" />-->
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
