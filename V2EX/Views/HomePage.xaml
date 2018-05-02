@@ -94,18 +94,22 @@
                                 ProfilePicture="{x:Bind Member.Avatar_mini, Converter={StaticResource StringFormateValueConverter}, ConverterParameter='https:'}" />
                             <RelativePanel Grid.Column="1" Margin="16,6,0,0">
                                 <TextBlock
-                                    x:Name="titleText"
-                                    Foreground="{ThemeResource SystemControlForegroundAccentBrush}"
-                                    Style="{StaticResource SubtitleTextBlockStyle}"
-                                    Text="{x:Bind Title.Trim()}"
+                                    x:Name="userNameText"
+                                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                                     TextLineBounds="TrimToCapHeight"
-                                    TextWrapping="NoWrap" />
+                                    TextWrapping="NoWrap">
+                                    <Run Text="{x:Bind Member.Username}" />
+                                    <Run FontWeight="Black" Text="·" />
+                                    <Run Text="{x:Bind Node.Title}" />
+                                    <Run FontWeight="Black" Text="·" />
+                                    <Run Text="{x:Bind Replies}" />
+                                </TextBlock>
                                 <TextBlock
                                     Margin="0,4,0,0"
-                                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                    RelativePanel.Below="titleText"
-                                    Style="{StaticResource BodyTextBlockStyle}"
-                                    Text="{x:Bind Content_rendered, Converter={StaticResource StringFormateValueConverter}, ConverterParameter='html'}"
+                                    Foreground="{ThemeResource SystemControlForegroundAccentBrush}"
+                                    RelativePanel.Below="userNameText"
+                                    Style="{StaticResource SubtitleTextBlockStyle}"
+                                    Text="{x:Bind Title.Trim()}"
                                     TextTrimming="CharacterEllipsis" />
                             </RelativePanel>
                             <VisualStateManager.VisualStateGroups>

@@ -21,7 +21,12 @@ namespace V2EX.Converters
                     return value;
 
                 if (parameter.ToString() == "https:")
-                    return new BitmapImage() { UriSource = new Uri($"{parameter}{value}") };
+                {
+                    if (value.ToString().Contains("https"))
+                        return new BitmapImage() { UriSource = new Uri($"{value}") };
+                    else
+                        return new BitmapImage() { UriSource = new Uri($"{parameter}{value}") };
+                }
 
                 if (parameter.ToString() == "html")
                 {

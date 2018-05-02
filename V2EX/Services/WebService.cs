@@ -18,7 +18,10 @@ namespace V2EX.Services
     /// 参考如下方式进行请求
     /// https://github.com/greatyao/v2ex-android/blob/v2ex2/app/src/main/java/com/yaoyumeng/v2ex2/api/V2EXManager.java
     /// </summary>
-    public class WebService: SingletonProvider<WebService>
+    /// <summary>
+    /// 私有部分
+    /// </summary>
+    public partial class WebService : SingletonProvider<WebService>
     {
         #region URLs
         private const string HTTPS_API_URL = "https://www.v2ex.com/api";
@@ -46,9 +49,13 @@ namespace V2EX.Services
                     {
                         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
                         client.DefaultRequestHeaders.ExpectContinue = false;
-                        var response = await client.GetAsync(uri);
-                        //response.EnsureSuccessStatusCode();
-                        var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                        string json = string.Empty;
+                        if (Uri.TryCreate(uri, UriKind.RelativeOrAbsolute, out Uri result))
+                        {
+                            var response = await client.GetAsync(result);
+                            //response.EnsureSuccessStatusCode();
+                            json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                        }
                         callback(json, null);
                     }
                 }
@@ -84,54 +91,102 @@ namespace V2EX.Services
                 if (!string.IsNullOrWhiteSpace(json) && ex == null)
                 {
                     DeserializeObject<IEnumerable<Topic>>(json, (list, innerEx) =>
-                     {
-                         if (list != null && innerEx == null)
-                             callback(list, null);
-                         else
-                             callback(null, innerEx);
-                     });
+                    {
+                        if (list != null && innerEx == null)
+                            callback(list, null);
+                        else
+                            callback(null, innerEx);
+                    });
                 }
                 else
                     callback(null, ex);
             });
         }
+    }
 
-        public async Task<IEnumerable<Topic>> GetHotTopicsAsync(bool refresh = true)
+
+    public partial class WebService: SingletonProvider<WebService>
+    {
+        /// <summary>
+        /// 获取首页Tab页中话题
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Dictionary<string, string>> GetTabList()
+        {
+            Dictionary<string, string> tabs = new Dictionary<string, string>();
+
+            await GetJsonAsync(HTTPS_BASE_URL, (html, ex) => 
+            {
+                if (!string.IsNullOrWhiteSpace(html) && ex == null)
+                {
+                    var dic = PersistenceHelper.ParseTabs(html);
+                    foreach (var tab in dic)
+                    {
+                        tabs.Add(tab.Key, tab.Value);
+                    }
+                }
+            });
+
+            return tabs;
+        }
+
+        /// <summary>
+        /// 获取首页各Tab页中的话题信息
+        /// </summary>
+        /// <param name="tab"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Topic>> GetTopicsByTabAsync(string tab)
+        {
+            List<Topic> list = new List<Topic>();
+
+            string uri = $"{HTTPS_BASE_URL}{tab}";
+            await GetJsonAsync(uri, (html, ex) =>
+            {
+                if (!string.IsNullOrWhiteSpace(html) && ex == null)
+                {
+                    List<Topic> topics = PersistenceHelper.ParseTabTopics(html);
+                    list.AddRange(topics);
+                }
+            });
+            return list;
+        }
+
+
+        /// <summary>
+        /// 获取最热话题
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<Topic>> GetHotTopicsAsync()
         {
             List<Topic> topics = new List<Topic>();
-            if (refresh)
+            await GetTopicsAsync(HTTPS_API_URL + API_HOT, (list, ex) =>
             {
-                await GetTopicsAsync(HTTPS_API_URL + API_HOT, (list, ex) =>
-                {
-                    if (ex == null)
-                        topics.AddRange(list);
-                });
-            }
-            else
-            {
-
-            }
+                if (ex == null)
+                    topics.AddRange(list);
+            });
             return topics;
         }
 
-        public async Task<IEnumerable<Topic>> GetLatestTopicsAsync(bool refresh = true)
+        /// <summary>
+        /// 获取最新话题
+        /// </summary>
+        /// <param name="refresh"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Topic>> GetLatestTopicsAsync()
         {
             List<Topic> topics = new List<Topic>();
-            if (refresh)
+            await GetTopicsAsync(HTTPS_API_URL + API_LATEST, (list, ex) =>
             {
-                await GetTopicsAsync(HTTPS_API_URL + API_LATEST, (list, ex) =>
-                {
-                    if (ex == null)
-                        topics.AddRange(list);
-                });
-            }
-            else
-            {
-
-            }
+                if (ex == null)
+                    topics.AddRange(list);
+            });
             return topics;
         }
 
+        /// <summary>
+        /// 获取所有节点
+        /// </summary>
+        /// <returns></returns>
         public async Task<IEnumerable<Node>> GetAllNodesAsync()
         {
             List<Node> nodes = new List<Node>();

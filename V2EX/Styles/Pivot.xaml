@@ -332,6 +332,8 @@
     </Style>
 
     <Style TargetType="PivotHeaderItem">
+        <Setter Property="Height" Value="60" />
+        <Setter Property="Width" Value="180" />
         <Setter Property="FontSize" Value="{ThemeResource PivotHeaderItemFontSize}" />
         <Setter Property="FontFamily" Value="{ThemeResource PivotHeaderItemFontFamily}" />
         <Setter Property="FontWeight" Value="{ThemeResource PivotHeaderItemThemeFontWeight}" />
@@ -339,14 +341,16 @@
         <Setter Property="Background" Value="{ThemeResource PivotHeaderItemBackgroundUnselected}" />
         <Setter Property="Foreground" Value="{ThemeResource PivotHeaderItemForegroundUnselected}" />
         <Setter Property="Padding" Value="{ThemeResource PivotHeaderItemMargin}" />
-        <Setter Property="Height" Value="48" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="PivotHeaderItem">
                     <Grid
                         x:Name="Grid"
+                        Width="{TemplateBinding Width}"
+                        Height="{TemplateBinding Height}"
                         Padding="{TemplateBinding Padding}"
                         Background="{TemplateBinding Background}">
                         <Grid.RenderTransform>

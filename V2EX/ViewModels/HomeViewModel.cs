@@ -54,10 +54,17 @@ namespace V2EX.ViewModels
         private async Task InitializeTabMenusAsync()
         {
             TabMenus.Clear();
-            TabMenus.Add(new TabViewModel("最新", "latest", true));
-            TabMenus.Add(new TabViewModel("最热", "hot", false));
 
-            await UpdateTabItemAsync(TabMenus.FirstOrDefault());
+            Dictionary<string, string> tabs = await WebService.Instance.GetTabList();
+            foreach (var tab in tabs)
+            {
+                TabMenus.Add(new TabViewModel(tab.Value, tab.Key, false));
+            }
+            if (TabMenus.Count < 1)
+                return;
+
+            TabMenus[0].IsChecked = true;
+            await UpdateTabItemAsync(TabMenus.First());
         }
 
         public async Task UpdateTabItemAsync(TabViewModel tab)
@@ -110,24 +117,13 @@ namespace V2EX.ViewModels
             }
         }
 
-        public async Task LoadTabTopicsAsync(bool isRefresh)
+        public async Task LoadTabTopicsAsync(bool isRefresh = true)
         {
             Topics.Clear();
 
             if (isRefresh)
             {
-                IEnumerable<Topic> list = new List<Topic>();
-                switch (Tag)
-                {
-                    case "latest":
-                        list = await WebService.Instance.GetLatestTopicsAsync(isRefresh);
-                        break;
-                    case "hot":
-                        list = await WebService.Instance.GetHotTopicsAsync(isRefresh);
-                        break;
-                    default:
-                        break;
-                }
+                IEnumerable<Topic> list = await WebService.Instance.GetTopicsByTabAsync(Tag);
                 foreach (var item in list)
                 {
                     Topics.Add(item);

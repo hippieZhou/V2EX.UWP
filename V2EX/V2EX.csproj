@@ -95,6 +95,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Commons\PersistenceHelper.cs" />
     <Compile Include="Commons\ProcessTime.cs" />
     <Compile Include="Commons\ResourceExtensions.cs" />
     <Compile Include="Commons\SingletonProvider.cs" />
