@@ -70,27 +70,79 @@
                     </Grid>
                 </Grid>
             </Grid>
-            <!--<WebView
-                Grid.Row="1"
-                common:WebViewExtensions.HTML="{x:Bind ViewModel.Topic.Content_rendered, Mode=OneWay}"
-                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                ScrollViewer.VerticalScrollBarVisibility="Auto"
-                ScrollViewer.VerticalScrollMode="Auto" />-->
             <ScrollViewer
                 Grid.Row="1"
                 BorderBrush="{ThemeResource AppBarBorderThemeBrush}"
                 BorderThickness="2"
                 HorizontalScrollBarVisibility="Disabled"
                 VerticalScrollBarVisibility="Visible">
-                <controls:MarkdownTextBlock
-                    x:Name="MarkdownText"
-                    Margin="12"
-                    Header1Foreground="{ThemeResource SystemControlForegroundAccentBrush}"
-                    ImageStretch="UniformToFill"
-                    LinkForeground="DodgerBlue"
-                    RequestedTheme="Default"
-                    Text="{x:Bind ViewModel.Topic.Content_rendered, Mode=OneWay, Converter={StaticResource StringFormateValueConverter}, ConverterParameter='HTML'}"
-                    UriPrefix="ms-appx://" />
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <controls:MarkdownTextBlock
+                        x:Name="MarkdownText"
+                        Grid.Row="0"
+                        Margin="12"
+                        Header1Foreground="{ThemeResource SystemControlForegroundAccentBrush}"
+                        ImageStretch="UniformToFill"
+                        LinkForeground="DodgerBlue"
+                        RequestedTheme="Default"
+                        Text="{x:Bind ViewModel.Topic.Content_rendered, Mode=OneWay, Converter={StaticResource StringFormateValueConverter}, ConverterParameter='HTML'}"
+                        UriPrefix="ms-appx://" />
+                    <Border
+                        Grid.Row="1"
+                        Margin="12,24,12,12"
+                        BorderBrush="LightGray"
+                        BorderThickness="1"
+                        CornerRadius="4">
+                        <ItemsControl ItemsSource="{x:Bind ViewModel.Replies, Mode=OneWay}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="m:Reply">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <PersonPicture
+                                            Grid.Column="0"
+                                            Width="32"
+                                            Margin="12"
+                                            ProfilePicture="{x:Bind Member.Avatar_mini, Mode=OneWay, Converter={StaticResource StringFormateValueConverter}, ConverterParameter='https:'}" />
+                                        <Grid Grid.Column="1" Margin="12,6">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock
+                                                Grid.Row="0"
+                                                Margin="6,4"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Center"
+                                                FontWeight="Bold"
+                                                Text="{x:Bind Member.Username, Mode=OneWay}" />
+                                            <TextBlock
+                                                Grid.Row="1"
+                                                Margin="6,4"
+                                                Style="{StaticResource BodyTextBlockStyle}"
+                                                Text="{x:Bind Content, Mode=OneWay}"
+                                                TextWrapping="WrapWholeWords" />
+                                        </Grid>
+                                        <Border
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="2"
+                                            Height="1"
+                                            Margin="0,6"
+                                            VerticalAlignment="Bottom"
+                                            Background="LightGray" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                    </Border>
+                </Grid>
             </ScrollViewer>
         </Grid>
 
