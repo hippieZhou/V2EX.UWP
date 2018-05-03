@@ -30,17 +30,6 @@ namespace V2EX.Views
         {
             this.InitializeComponent();
             ViewModel.Initialize(ContentFrame);
-            Window.Current.CoreWindow.SizeChanged += (s, e) => UpdateAppTitle();
-            CoreApplication.GetCurrentView().TitleBar.LayoutMetricsChanged += (s, e) => UpdateAppTitle();
         }
-
-        void UpdateAppTitle()
-        {
-            var full = (ApplicationView.GetForCurrentView().IsFullScreenMode);
-            var left = 12 + (full ? 0 : CoreApplication.GetCurrentView().TitleBar.SystemOverlayLeftInset);
-            AppTitle.Margin = new Thickness(left, 8, 0, 0);
-        }
-
-
     }
 }

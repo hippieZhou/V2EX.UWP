@@ -1,4 +1,5 @@
-﻿using HtmlAgilityPack;
+﻿using Html2Markdown;
+using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace V2EX.Converters
         {
             try
             {
-                if (parameter == null)
+                if (value == null || parameter == null)
                     return value;
 
                 if (parameter.ToString() == "https:")
@@ -28,10 +29,15 @@ namespace V2EX.Converters
                         return new BitmapImage() { UriSource = new Uri($"{parameter}{value}") };
                 }
 
-                if (parameter.ToString() == "html")
+                if (parameter.ToString() == "HTML")
                 {
-                    string html = HtmlUtilities.ConvertToText(value.ToString());
-                    return html;
+                    var converter = new Converter();
+                    
+                    //ISSUE: var s1 = HtmlNode.CreateNode(value.ToString());
+                    var markdown = converter.Convert(value.ToString());
+                    //string html = HtmlUtilities.ConvertToText(value.ToString());
+
+                    return markdown;
                 }
 
                 if (parameter.ToString() == "..." && value.ToString().Length > 52)
@@ -39,7 +45,7 @@ namespace V2EX.Converters
 
                 return value;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return value;
             }

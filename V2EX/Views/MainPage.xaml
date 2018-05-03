@@ -8,23 +8,30 @@
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:V2EX.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:V2EX.ViewModels"
     DataContext="{Binding Main, Source={StaticResource Locator}}"
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <TextBlock
-            x:Name="AppTitle"
-            Canvas.ZIndex="1"
-            IsHitTestVisible="False"
-            Style="{StaticResource CaptionTextBlockStyle}"
-            Text="{x:Bind appmodel:Package.Current.DisplayName}" />
         <NavigationView
             AlwaysShowHeader="{x:Bind ViewModel.AlwaysShowHeader, Mode=OneWay}"
             Canvas.ZIndex="0"
-            Header="{x:Bind ViewModel.Header, Mode=OneWay}"
             IsSettingsVisible="True"
             MenuItemsSource="{x:Bind ViewModel.PrimaryMenus}"
             SelectedItem="{x:Bind ViewModel.SelectedMenu, Mode=OneWay}">
+            <NavigationView.HeaderTemplate>
+                <DataTemplate x:DataType="vm:MainViewModel">
+                    <Grid Height="80" VerticalAlignment="Stretch">
+                        <TextBlock
+                            x:Name="Header"
+                            Margin="12,5,0,11"
+                            VerticalAlignment="Bottom"
+                            Style="{StaticResource TitleTextBlockStyle}"
+                            Text="{x:Bind Header, Mode=OneWay}"
+                            TextWrapping="NoWrap" />
+                    </Grid>
+                </DataTemplate>
+            </NavigationView.HeaderTemplate>
             <NavigationView.AutoSuggestBox>
                 <AutoSuggestBox PlaceholderText="Search" QueryIcon="Find" />
             </NavigationView.AutoSuggestBox>
@@ -33,7 +40,7 @@
                     <ic:InvokeCommandAction Command="{x:Bind ViewModel.ItemSelectedCmd}" />
                 </ic:EventTriggerBehavior>
             </i:Interaction.Behaviors>
-            <Frame x:Name="ContentFrame" Margin="24">
+            <Frame x:Name="ContentFrame">
                 <Frame.ContentTransitions>
                     <TransitionCollection>
                         <NavigationThemeTransition />

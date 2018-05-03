@@ -28,9 +28,9 @@ namespace V2EX.Views
         {
             this.InitializeComponent();
         }
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            ViewModel.Initialize(e.Parameter);
+            await ViewModel.InitializeAsync(e.Parameter);
             base.OnNavigatedTo(e);
         }
     }

@@ -151,6 +151,43 @@ namespace V2EX.Services
             return list;
         }
 
+        /// <summary>
+        /// 依据话题ID获取相应话题内容
+        /// </summary>
+        /// <param name="topicId"></param>
+        /// <returns></returns>
+        public async Task<Topic> GetTopicByTopicId(int topicId)
+        {
+            Topic topic = null;
+            string uri = HTTPS_API_URL + API_TOPIC + "?id=" + topicId;
+            await GetJsonAsync(uri, (json, ex) =>
+            {
+                if (!string.IsNullOrWhiteSpace(json) && ex == null)
+                {
+                    DeserializeObject<IEnumerable<Topic>>(json, (list, innerEx) =>
+                    {
+                        topic = list?.FirstOrDefault();
+                    });
+                }
+            });
+            return topic;
+        }
+
+        public async Task<IEnumerable<Reply>> GetRepliesByTopicIdAsync(int topicId)
+        {
+            List<Reply> replies = new List<Reply>();
+            string uri = $"{HTTPS_API_URL}{API_REPLIES}?topic_id={topicId}";
+            await GetJsonAsync(uri, (json, ex) => 
+            {
+                if (!string.IsNullOrWhiteSpace(json) && ex == null)
+                    DeserializeObject<IEnumerable<Reply>>(json, (list, innerEx) =>
+                    {
+                        replies.AddRange(list);
+                    });
+            });
+            return replies;
+        }
+
 
         /// <summary>
         /// 获取最热话题

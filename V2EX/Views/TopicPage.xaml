@@ -2,11 +2,119 @@
     x:Class="V2EX.Views.TopicPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:common="using:V2EX.Commons"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:V2EX.Views"
+    xmlns:m="using:V2EX.Models"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     DataContext="{Binding Topic, Source={StaticResource Locator}}"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" />
+    <Grid
+        x:Name="rootGrid"
+        Margin="0,-100,0,0"
+        Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition x:Name="rdfHeader" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Background="{ThemeResource SystemControlAcrylicElementBrush}">
+                <Grid Margin="24">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <PersonPicture
+                        Grid.Column="0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        ProfilePicture="{x:Bind ViewModel.Topic.Member.Avatar_large, Converter={StaticResource StringFormateValueConverter}, ConverterParameter='https:'}" />
+                    <Grid Grid.Column="1" Margin="24">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock
+                            Grid.Row="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource SubheaderTextBlockStyle}"
+                            Text="{x:Bind ViewModel.Topic.Title}" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Margin="0,12"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Text="{x:Bind ViewModel.Topic.Member.Username}" />
+                        <Grid Grid.Row="2">
+                            <TextBlock
+                                x:Name="userNameText"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                FontFamily="Segoe UI"
+                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                TextLineBounds="TrimToCapHeight"
+                                TextWrapping="NoWrap">
+                                <Run Text="{x:Bind ViewModel.Topic.Node.Title}" />
+                                <Run FontWeight="Black" Text="·" />
+                                <Run Text="{x:Bind ViewModel.Topic.Replies}" />
+                            </TextBlock>
+                            <Button
+                                HorizontalAlignment="Right"
+                                Content="评论"
+                                Style="{StaticResource TextBlockButtonStyle}" />
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <!--<WebView
+                Grid.Row="1"
+                common:WebViewExtensions.HTML="{x:Bind ViewModel.Topic.Content_rendered, Mode=OneWay}"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                ScrollViewer.VerticalScrollMode="Auto" />-->
+            <ScrollViewer
+                Grid.Row="1"
+                BorderBrush="{ThemeResource AppBarBorderThemeBrush}"
+                BorderThickness="2"
+                HorizontalScrollBarVisibility="Disabled"
+                VerticalScrollBarVisibility="Visible">
+                <controls:MarkdownTextBlock
+                    x:Name="MarkdownText"
+                    Margin="12"
+                    Header1Foreground="{ThemeResource SystemControlForegroundAccentBrush}"
+                    ImageStretch="UniformToFill"
+                    LinkForeground="DodgerBlue"
+                    RequestedTheme="Default"
+                    Text="{x:Bind ViewModel.Topic.Content_rendered, Mode=OneWay, Converter={StaticResource StringFormateValueConverter}, ConverterParameter='HTML'}"
+                    UriPrefix="ms-appx://" />
+            </ScrollViewer>
+        </Grid>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="LayoutVisualStates">
+                <VisualState x:Name="WideLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="rootGrid.Margin" Value="0" />
+                        <Setter Target="rdfHeader.Height" Value="240" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="NarrowLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="rootGrid.Margin" Value="0,-100,0,0" />
+                        <Setter Target="rdfHeader.Height" Value="320" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </Grid>
 </Page>

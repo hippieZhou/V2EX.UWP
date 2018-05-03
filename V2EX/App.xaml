@@ -15,6 +15,7 @@
 
             <x:Double x:Key="Breakpoint640Plus">641</x:Double>
             <ResourceDictionary.MergedDictionaries>
+                <!--<ResourceDictionary Source="/Styles/NavigationView.xaml" />-->
                 <ResourceDictionary Source="/Styles/ScrollBar.xaml" />
                 <ResourceDictionary Source="/Styles/RadioButton.xaml" />
                 <ResourceDictionary Source="/Styles/Pivot.xaml" />

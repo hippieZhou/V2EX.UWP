@@ -115,7 +115,7 @@
                         </GridView>
 
                         <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="LayoutVisualStates"  >
+                            <VisualStateGroup x:Name="LayoutVisualStates">
                                 <VisualState x:Name="WideLayout">
                                     <VisualState.StateTriggers>
                                         <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />

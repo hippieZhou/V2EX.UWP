@@ -221,6 +221,7 @@
                                         <Border
                                             Grid.Column="1"
                                             Height="1"
+                                            Margin="12,0"
                                             VerticalAlignment="Bottom"
                                             Background="LightGray" />
                                         <Button
